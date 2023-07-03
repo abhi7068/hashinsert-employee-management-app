@@ -13,7 +13,7 @@ function Index() {
   };
   return (
     <>
-      <nav className="flex flex-row justify-between py-4 mb-8">
+      <nav className="flex flex-row justify-between py-12 mb-8">
         <div className="text-text-color">
           {isOpen ? (
             <MenuOpenIcon fontSize="large" onClick={toggleDrawer} />
