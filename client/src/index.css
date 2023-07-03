@@ -14,4 +14,8 @@
   html {
     font-family: "Poppins", sans-serif;
   }
+  ::selection {
+    background: var(--accent);
+    color: var(--background);
+  }
 }
