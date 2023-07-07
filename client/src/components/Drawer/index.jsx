@@ -10,7 +10,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import DraftsIcon from "@mui/icons-material/Drafts";
 const StyledMenuItem = styled(MenuItem)(() => ({
   "&:hover": {
-    backgroundColor: "#4919f5",
+    backgroundColor: "var(--primary-button)",
     color: "white",
   },
 }));
