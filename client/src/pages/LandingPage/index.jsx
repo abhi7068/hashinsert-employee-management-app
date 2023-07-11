@@ -11,11 +11,13 @@ function LandingPage() {
             Employee Management App
           </div>
 
-          <div className=" leading-relaxed text-left text-lg">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Recusandae
-            corrupti veniam ipsum reprehenderit deleniti a in sed accusantium
-            fuga quod blanditiis incidunt nihil illum, deserunt modi sit. Iure,
-            dolorem doloribus?
+          <div className=" leading-relaxed text-left text-lg text-black/70">
+            Welcome to WorkForcePro, the ultimate employee management app
+            designed to streamline your business operations and revolutionize
+            the way you manage your workforce. With our powerful suite of
+            features and intuitive interface, we empower businesses of all sizes
+            to maximize efficiency, boost productivity, and foster a harmonious
+            work environment.
           </div>
           <div className="mb-4">
             <Button content="Login" />
