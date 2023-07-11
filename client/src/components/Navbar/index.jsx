@@ -16,9 +16,17 @@ function Index() {
       <nav className="flex flex-row justify-between py-12 mb-8">
         <div className="text-text-color">
           {isOpen ? (
-            <MenuOpenIcon fontSize="large" onClick={toggleDrawer} />
+            <MenuOpenIcon
+              fontSize="large"
+              onClick={toggleDrawer}
+              className="cursor-pointer"
+            />
           ) : (
-            <MenuIcon fontSize="large" onClick={toggleDrawer} />
+            <MenuIcon
+              fontSize="large"
+              onClick={toggleDrawer}
+              className="cursor-pointer"
+            />
           )}
         </div>
 
