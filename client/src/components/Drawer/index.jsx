@@ -8,8 +8,12 @@ import PeopleIcon from "@mui/icons-material/People";
 import ViewTimelineIcon from "@mui/icons-material/ViewTimeline";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import DraftsIcon from "@mui/icons-material/Drafts";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 import LogoImage from "/logo2.png";
+import { signOut } from "firebase/auth";
+import { auth } from "../../config/firebase";
 const StyledMenuItem = styled(MenuItem)(() => ({
   "&:hover": {
     backgroundColor: "var(--primary-button)",
@@ -36,6 +40,16 @@ const StyledLogo = styled("img")(() => ({
 
 // eslint-disable-next-line react/prop-types
 export default function TemporaryDrawer({ isOpen, toggleDrawer }) {
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // eslint-disable-next-line no-unused-vars
+  const [user, isLoading] = useAuthState(auth);
   const list = () => (
     <MenuList>
       <LogoContainer>
@@ -65,6 +79,14 @@ export default function TemporaryDrawer({ isOpen, toggleDrawer }) {
         </ListItemIcon>
         <ListItemText>LeaveRequests</ListItemText>
       </StyledMenuItem>
+      {user && (
+        <StyledMenuItem onClick={handleLogout}>
+          <ListItemIcon className="hover:text-white">
+            <LogoutIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Logout</ListItemText>
+        </StyledMenuItem>
+      )}
     </MenuList>
   );
 
