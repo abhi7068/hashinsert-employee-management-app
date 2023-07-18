@@ -1,9 +1,14 @@
 // import React from 'react'
 
+<<<<<<< Updated upstream
 import { auth } from "../../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+=======
+import { Drawer } from "@mui/material";
+import Button from "../../components/Button/index";
+>>>>>>> Stashed changes
 
 function LandingPage() {
   // eslint-disable-next-line no-unused-vars
@@ -19,6 +24,7 @@ function LandingPage() {
     <>
       <div className="grid  w-100% tablet:grid-cols-1 grid-cols-2 gap-6 mb-14">
         <div className="w-100% tablet:order-2 flex flex-col justify-evenly space-y-8">
+          <Drawer/>
           <div className=" text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-950">
             Employee Management App
           </div>
