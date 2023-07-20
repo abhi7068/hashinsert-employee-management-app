@@ -11,7 +11,7 @@ function LandingPage() {
   const navigate = useNavigate();
   useEffect(() => {
     if (user) {
-      navigate("/dummypage");
+      navigate("/homepage");
     }
   }, [user]);
 
