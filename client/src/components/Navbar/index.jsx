@@ -58,7 +58,7 @@ function Index() {
           )}
           {!user && (
             <button
-              className="bg-primary-button font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white hover:shadow-primary-button hover:-translate-y-1 transition-shadow transition-transform"
+              className="bg-primary-button font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white hover:shadow-primary-button hover:-translate-y-1 transition-shadow"
               onClick={signInWithGoogle}
             >
               <GoogleIcon className="mx-1 inline text-inherit" /> Login
