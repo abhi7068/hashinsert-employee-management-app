@@ -6,7 +6,7 @@ import Employees from "./pages/AdminPages/Employees";
 import CalenderView from "./pages/AdminPages/CalenderView";
 import TimeSheets from "./pages/AdminPages/TimeSheets";
 import LeaveRequest from "./pages/AdminPages/LeaveRequest";
-
+import Error from "./pages/Errorpage/Error";
 function App() {
   return (
     <>
@@ -19,6 +19,7 @@ function App() {
           <Route path="/admin/timesheets" element={<TimeSheets />} />
           <Route path="/admin/calenderview" element={<CalenderView />} />
           <Route path="/admin/leaverequest" element={<LeaveRequest />} />
+          <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>
     </>
