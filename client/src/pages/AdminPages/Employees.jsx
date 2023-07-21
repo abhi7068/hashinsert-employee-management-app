@@ -1,9 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Table, Modal, Form, Input } from "antd";
-import axios from "axios";
-
+// import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+import FormDialog from "../../components/Dialog";
+import MuiSnackbar from "../../components/Snackbar";
+import { SnackbarContext } from "../../context/SnackbarContext";
+// eslint-disable-next-line react/prop-types
 const EditForm = ({ visible, onCancel, initialValues, onFinish }) => {
   const [form] = Form.useForm();
+  const finalUser = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleFinish = () => {
     form
@@ -16,6 +24,12 @@ const EditForm = ({ visible, onCancel, initialValues, onFinish }) => {
         console.error("Validation error:", error);
       });
   };
+  // navigate to / if user is not logged in
+  useEffect(() => {
+    if (!finalUser?.user?.email) {
+      navigate("/");
+    }
+  }, [finalUser?.user?.email]);
 
   return (
     <Modal
@@ -62,9 +76,18 @@ const EditForm = ({ visible, onCancel, initialValues, onFinish }) => {
 };
 
 const Employees = () => {
+  const [open, setOpen] = React.useState(false);
+  const { snackbar, handleSnackbarClose } = React.useContext(SnackbarContext);
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleDialogOpen = () => {
+    setOpen(true);
+  };
   const [editFormVisible, setEditFormVisible] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
-  const API_URL = "http://localhost:4000";
+  // const API_URL = "http://localhost:4000";
 
   const handleEdit = (values) => {
     setSelectedRow(values);
@@ -87,20 +110,20 @@ const Employees = () => {
   };
   const [users, setUsers] = React.useState([]);
 
-  const getAllEmployees = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/employee/getAll`);
-      const usersList = response.data.Employee;
-      setUsers(usersList);
-      console.log(usersList);
-    } catch (error) {
-      console.log("error in getting all employees", error);
-    }
-  };
+  // const getAllEmployees = async () => {
+  //   try {
+  //     const response = await axios.get(`${API_URL}/employee/getAll`);
+  //     const usersList = response.data.Employee;
+  //     setUsers(usersList);
+  //     console.log(usersList);
+  //   } catch (error) {
+  //     console.log("error in getting all employees", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    getAllEmployees();
-  }, []);
+  // useEffect(() => {
+  //   getAllEmployees();
+  // }, []);
 
   const columns = [
     {
@@ -126,14 +149,14 @@ const Employees = () => {
         <>
           <span className="text-center m-2 ">
             <button
-              className="btn btn-secondary font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white hover:shadow-primary-button hover:-translate-y-1 transition-shadow"
+              className="btn btn-secondary font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white "
               onClick={() => handleEdit(record)}
             >
               Edit
             </button>
           </span>
           <span className="text-center m-2 ">
-            <button className="btn btn-danger font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white hover:shadow-primary-button hover:-translate-y-1 transition-shadow">
+            <button className="btn btn-danger font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white ">
               Block
             </button>
           </span>
@@ -141,11 +164,27 @@ const Employees = () => {
       ),
     },
   ];
-  {
-  }
+
   return (
     <>
-      <h2>Employees</h2>
+      <MuiSnackbar
+        open={snackbar.open}
+        handleClose={handleSnackbarClose}
+        message={snackbar.message}
+        severity={snackbar.severity}
+      />
+      <FormDialog open={open} handleClose={handleClose} />
+      <div className=" flex flex-row justify-between py-4 mb-4 items-center">
+        <h2>Employees</h2>
+        {/* add a dialog box here with email field and add and cancel buttons  */}
+        <button
+          className="bg-primary-button font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white "
+          onClick={handleDialogOpen}
+        >
+          <AddIcon className="  inline text-inherit" />
+          New
+        </button>
+      </div>
       <Table columns={columns} dataSource={users}></Table>
       <EditForm
         visible={editFormVisible}
