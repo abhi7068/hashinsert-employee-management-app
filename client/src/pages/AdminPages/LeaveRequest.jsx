@@ -1,7 +1,13 @@
-import React from "react";
+// eslint-disable-next-line no-unused-vars
+import React, { useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+
 import { Table } from "antd";
 
 const LeaveRequest = () => {
+  const finalUser = useContext(AuthContext);
+  const navigate = useNavigate();
   const users = [
     {
       employee_id: "1",
@@ -36,15 +42,16 @@ const LeaveRequest = () => {
     {
       title: "Actions",
       dataIndex: "actions",
+      // eslint-disable-next-line no-unused-vars
       render: (text, record) => (
         <>
           <span className="text-center m-2 ">
-            <button className="btn btn-success font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white hover:shadow-primary-button hover:-translate-y-1 transition-shadow">
+            <button className="btn btn-success font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white ">
               Accept
             </button>
           </span>
           <span className="text-center m-2 ">
-            <button className="btn btn-danger font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white hover:shadow-primary-button hover:-translate-y-1 transition-shadow">
+            <button className="btn btn-danger font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white ">
               Decline
             </button>
           </span>
@@ -52,10 +59,21 @@ const LeaveRequest = () => {
       ),
     },
   ];
+  // navigate to / if user is not logged in
+
+  useEffect(() => {
+    if (!finalUser?.user?.email) {
+      navigate("/");
+    }
+  }, [finalUser?.user?.email]);
   return (
     <>
       <h2>Leave Requests</h2>
-      <Table columns={columns} dataSource={users}></Table>
+      <Table
+        columns={columns}
+        dataSource={users}
+        key={users.employee_id}
+      ></Table>
     </>
   );
 };
