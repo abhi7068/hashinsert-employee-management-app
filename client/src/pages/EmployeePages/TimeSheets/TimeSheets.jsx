@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TimeSheets = () => {
+const EmpTimeSheets = () => {
     return (
         <div>
             This is timesheets pages
@@ -8,4 +8,4 @@ const TimeSheets = () => {
     );
 };
 
-export default TimeSheets;
+export default EmpTimeSheets;

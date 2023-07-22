@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CalenderView = () => {
+const EmpCalenderView = () => {
     return (
         <div>
             this is calender view pages
@@ -8,4 +8,4 @@ const CalenderView = () => {
     );
 };
 
-export default CalenderView;
+export default EmpCalenderView;

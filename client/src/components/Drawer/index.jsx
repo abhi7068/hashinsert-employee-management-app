@@ -5,28 +5,17 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { styled } from "@mui/material/styles";
-
-//import PeopleIcon from "@mui/icons-material/People";
-import ViewTimelineIcon from "@mui/icons-material/ViewTimeline";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import DraftsIcon from "@mui/icons-material/Drafts";
 import { AdminDrawer, EmployeeDrawer } from "../../data/drawerdata";
 import { Link } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LogoImage from "/logo2.png";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
-import { Link } from "react-router-dom";
-
-
-const StyledMenuItem = styled(MenuItem)(() => ({
-
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
 // eslint-disable-next-line no-unused-vars
 const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
-
   "&:hover": {
     backgroundColor: "#4919f5",
     color: "white",
@@ -76,52 +65,17 @@ export default function TemporaryDrawer({ isOpen, toggleDrawer }) {
     sideDrawerItems = [];
   }
 
+  const handleCloseDrawer = () => {
+    toggleDrawer();
+  }
+
   const list = () => (
     <MenuList>
-
       <LogoContainer>
         <StyledLogo src={LogoImage} alt="logo" />
       </LogoContainer>
-
-      <StyledMenuItem>
-        <ListItemIcon className="hover:text-white">
-          <PeopleIcon fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>Employees</ListItemText>
-      </StyledMenuItem>
-      <StyledMenuItem>
-        <ListItemIcon className="hover:text-white">
-
-      <StyledMenuItem component = { Link } to="/timeSheets" onClick={toggleDrawer}>
-        <ListItemIcon className=" hover:text-white">
-
-          <ViewTimelineIcon fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>TimeSheet</ListItemText>
-      </StyledMenuItem>
-
-      <StyledMenuItem>
-        <ListItemIcon className="hover:text-white">
-
-      <StyledMenuItem component = { Link } to="/calenderView" onClick={toggleDrawer}>
-        <ListItemIcon className=" hover:text-white">
-
-          <CalendarMonthIcon fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>CalendarView</ListItemText>
-      </StyledMenuItem>
-      <StyledMenuItem>
-        <ListItemIcon className="hover:text-white">
-      <StyledMenuItem component = { Link } to="/leaveRequests" onClick={toggleDrawer}>
-        <ListItemIcon className=" hover:text-white">
-          <DraftsIcon fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>LeaveRequests</ListItemText>
-      </StyledMenuItem>
-      {user && (
-
       {sideDrawerItems.map((item, index) => (
-        <StyledMenuItem key={index} className="hover:text-white">
+        <StyledMenuItem key={index} className="hover:text-white" onClick={handleCloseDrawer}>
           <ListItemIcon>{item.icon}</ListItemIcon>
           <Link to={item.path}>
             <ListItemText>{item.name}</ListItemText>
@@ -129,9 +83,8 @@ export default function TemporaryDrawer({ isOpen, toggleDrawer }) {
         </StyledMenuItem>
       ))}
       {finalUser?.user?.email && (
-
-        <StyledMenuItem onClick={handleLogout}>
-          <ListItemIcon className="hover:text-white">
+        <StyledMenuItem onClick={handleLogout} >
+          <ListItemIcon className="hover:text-white" >
             <LogoutIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>Logout</ListItemText>
@@ -144,5 +97,4 @@ export default function TemporaryDrawer({ isOpen, toggleDrawer }) {
     <Drawer anchor="left" open={isOpen} onClose={toggleDrawer}>
       {list()}
     </Drawer>
-  );
-}
+  )};
