@@ -1,5 +1,6 @@
 {
   "name": "client",
+  "proxy": "http://localhost:4000",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -14,16 +15,21 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.6",
+    "@radix-ui/react-dialog": "^1.0.4",
+    "antd": "^5.7.0",
+    "axios": "^1.4.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
     "firebase": "^10.0.0",
+    "lucide-react": "^0.263.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-<<<<<<< Updated upstream
     "react-firebase-hooks": "^5.1.1",
-=======
->>>>>>> Stashed changes
+
     "react-router-dom": "^6.14.1"
   },
   "devDependencies": {
+    "@types/node": "^20.4.2",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^4.0.0",
