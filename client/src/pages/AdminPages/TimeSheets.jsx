@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 import { Table, Modal } from "antd";
 
 const TimeSheets = () => {
+  const finalUser = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [isModalVisible, setIsModalVisibel] = React.useState(false);
 
   const handleFeedbackBtn = () => {
     setIsModalVisibel(true);
   };
+  // navigate to / if user is not logged in
+
+  useEffect(() => {
+    if (!finalUser?.user?.email) {
+      navigate("/");
+    }
+  }, [finalUser?.user?.email]);
 
   const users = [
     {
@@ -42,16 +55,17 @@ const TimeSheets = () => {
     {
       title: "Actions",
       dataIndex: "actions",
+      // eslint-disable-next-line no-unused-vars
       render: (text, record) => (
         <>
           <span className="text-center m-2 ">
-            <button className="btn btn-success font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white hover:shadow-primary-button hover:-translate-y-1 transition-shadow">
+            <button className="btn btn-success font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white ">
               Accept
             </button>
           </span>
           <span className="text-center m-2 ">
             <button
-              className="btn btn-secondary font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white hover:shadow-primary-button hover:-translate-y-1 transition-shadow"
+              className="btn btn-secondary font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white "
               onClick={handleFeedbackBtn}
             >
               FeedBack

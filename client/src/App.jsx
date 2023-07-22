@@ -1,7 +1,6 @@
 import LandingPage from "./pages/LandingPage";
 import Navbar from "./components/Navbar";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Dummy from "./pages/DummyPage/index";
 import Employees from "./pages/AdminPages/Employees";
 import CalenderView from "./pages/AdminPages/CalenderView";
 import TimeSheets from "./pages/AdminPages/TimeSheets";
@@ -14,11 +13,16 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/homepage" element={<Dummy />} />
+          {/* admin pages  */}
           <Route path="/admin/employees" element={<Employees />} />
           <Route path="/admin/timesheets" element={<TimeSheets />} />
           <Route path="/admin/calenderview" element={<CalenderView />} />
-          <Route path="/admin/leaverequest" element={<LeaveRequest />} />
+          <Route path="/admin/leaverequests" element={<LeaveRequest />} />
+          {/* change below pages to employee pages  */}
+          <Route path="/employee/profile" element={<Employees />} />
+          <Route path="/employee/timesheets" element={<TimeSheets />} />
+          <Route path="/employee/calenderview" element={<CalenderView />} />
+          <Route path="/employee/leaverequests" element={<LeaveRequest />} />
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>
