@@ -65,13 +65,17 @@ export default function TemporaryDrawer({ isOpen, toggleDrawer }) {
     sideDrawerItems = [];
   }
 
+  const handleCloseDrawer = () => {
+    toggleDrawer();
+  }
+
   const list = () => (
     <MenuList>
       <LogoContainer>
         <StyledLogo src={LogoImage} alt="logo" />
       </LogoContainer>
       {sideDrawerItems.map((item, index) => (
-        <StyledMenuItem key={index} className="hover:text-white">
+        <StyledMenuItem key={index} className="hover:text-white" onClick={handleCloseDrawer}>
           <ListItemIcon>{item.icon}</ListItemIcon>
           <Link to={item.path}>
             <ListItemText>{item.name}</ListItemText>
@@ -79,8 +83,8 @@ export default function TemporaryDrawer({ isOpen, toggleDrawer }) {
         </StyledMenuItem>
       ))}
       {finalUser?.user?.email && (
-        <StyledMenuItem onClick={handleLogout}>
-          <ListItemIcon className="hover:text-white">
+        <StyledMenuItem onClick={handleLogout} >
+          <ListItemIcon className="hover:text-white" >
             <LogoutIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>Logout</ListItemText>
@@ -93,5 +97,4 @@ export default function TemporaryDrawer({ isOpen, toggleDrawer }) {
     <Drawer anchor="left" open={isOpen} onClose={toggleDrawer}>
       {list()}
     </Drawer>
-  );
-}
+  )};
