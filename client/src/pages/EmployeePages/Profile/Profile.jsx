@@ -1,21 +1,31 @@
-import React from 'react';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthContext";
 
 const Profile = () => {
+  const navigate = useNavigate();
+  const finalUser = React.useContext(AuthContext);
 
-    const employeeData = {
-        emp_id: 1,
-        name: "John Doe",
-        gender: "male",
-        contact: 123456789,
-        email: "john.doe@example.com",
-        position: "Software Engineer",
+  React.useEffect(() => {
+    if (!finalUser?.user?.email) {
+      navigate("/");
     }
-    return (
-        <div>
-            <h1> MY PROFILE</h1>
+  }, [finalUser?.user?.email]);
 
-            <div>
-            <p>Employee ID: {employeeData.emp_id}</p>
+  const employeeData = {
+    emp_id: 1,
+    name: "John Doe",
+    gender: "male",
+    contact: 123456789,
+    email: "john.doe@example.com",
+    position: "Software Engineer",
+  };
+  return (
+    <div>
+      <h1> MY PROFILE</h1>
+
+      <div>
+        <p>Employee ID: {employeeData.emp_id}</p>
         <p>Name: {employeeData.name}</p>
         <p>Gender: {employeeData.gender}</p>
         <p>Contact: {employeeData.contact}</p>
@@ -23,8 +33,8 @@ const Profile = () => {
         <p>Position: {employeeData.position}</p>
         {/* Add more details here based on your employee data */}
       </div>
-        </div>
-    );
+    </div>
+  );
 };
 
 export default Profile;
