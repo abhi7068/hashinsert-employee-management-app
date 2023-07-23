@@ -10,6 +10,8 @@ import EmpCalenderView from "./pages/EmployeePages/CalenderView/CalenderView";
 import EmpTimeSheets from "./pages/EmployeePages/TimeSheets/TimeSheets";
 import EmpleaveRequests from "./pages/EmployeePages/leaveRequests/leaveRequests";
 import Profile from "./pages/EmployeePages/Profile/Profile";
+import Employee from "./pages/EmployeePages/EmployeeDashboard/Employee"
+import Edit from "./pages/EmployeePages/EmployeeDashboard/Edit";
 
 function App() {
   return (
@@ -24,7 +26,8 @@ function App() {
           <Route path="/admin/calenderview" element={<CalenderView />} />
           <Route path="/admin/leaverequests" element={<LeaveRequest />} />
           {/* change below pages to employee pages  */}
-          <Route path="/employee/profile" element={<Profile />} />
+          <Route path="/employee/profile" element={<Employee />} />
+          <Route path="/employee/profile/edit" element={<Edit />} />
           <Route path="/employee/timesheets" element={<EmpTimeSheets />} />
           <Route path="/employee/calenderview" element={<EmpCalenderView />} />
           <Route path="/employee/leaverequests" element={<EmpleaveRequests />} />
