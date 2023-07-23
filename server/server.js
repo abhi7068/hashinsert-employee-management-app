@@ -20,6 +20,9 @@ app.use("/department/", departmentRoute);
 const employeeRoute = require("./routes/employeeRoute");
 app.use("/employee/", employeeRoute);
 
+const leaveRequestRoute = require("./routes/leaveRequestRoute");
+app.use("/leaverequest/", leaveRequestRoute);
+
 app.get("/", (req, res) => {
   return res.json("hi there");
 });
