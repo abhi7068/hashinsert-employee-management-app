@@ -8,7 +8,7 @@ const saveEmployee = async(req,res)=>{
         email: req.body.email,
         phone_number: req.body.phone_number,
         gender:req.body.gender,
-        imageURL:req.body.imageURL,
+        // imageURL:req.body.imageURL,
         hire_date: req.body.hire_date,
         salary: req.body.salary,
         role: req.body.role
@@ -73,7 +73,7 @@ const updateEmployee =async(req,res)=>{
             email: req.body.email,
             phone_number: req.body.phone_number,
             gender:req.body.gender,
-            imageURL:req.body.imageURL,
+            // imageURL:req.body.imageURL,
             hire_date: req.body.hire_date,
             salary: req.body.salary,
             role: req.body.role
