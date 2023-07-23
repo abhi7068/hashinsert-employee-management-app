@@ -3,13 +3,15 @@ const Employee = require('../models/employee');
 const saveEmployee = async(req,res)=>{
     const newEmployee = Employee({
         employee_id: req.body.employee_id,
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
+        employee_name: req.body.employee_name,
+        // last_name: req.body.last_name,
         email: req.body.email,
         phone_number: req.body.phone_number,
+        gender:req.body.gender,
+        // imageURL:req.body.imageURL,
         hire_date: req.body.hire_date,
         salary: req.body.salary,
-        department_id: req.body.department_id
+        role: req.body.role
       });
       try {
             const savedEmployee=await newEmployee.save();
@@ -66,13 +68,15 @@ const updateEmployee =async(req,res)=>{
     try {
         const result=await Employee.findOneAndUpdate(filter,{
             employee_id: req.body.employee_id,
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
+            employee_name: req.body.employee_name,
+            // last_name: req.body.last_name,
             email: req.body.email,
             phone_number: req.body.phone_number,
+            gender:req.body.gender,
+            // imageURL:req.body.imageURL,
             hire_date: req.body.hire_date,
             salary: req.body.salary,
-            department_id: req.body.department_id
+            role: req.body.role
         },options);
         return res.status(200).send({success:true,data:result});
     } catch (error) {
