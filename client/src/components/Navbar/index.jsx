@@ -20,6 +20,8 @@ function Index() {
   // console.log(finalUser);
   const [isOpen, setIsOpen] = React.useState(false);
   const [user, isLoadingUser] = useAuthState(auth);
+  console.log(auth.currentUser);
+  // console.log(`user ${JSON.stringify(user)}`);
   const [loadingUsers, setLoadingUsers] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState(null);
 
