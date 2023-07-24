@@ -8,6 +8,18 @@ import FormDialog from "../../components/Dialog";
 import MuiSnackbar from "../../components/Snackbar";
 import { SnackbarContext } from "../../context/SnackbarContext";
 import { RerenderContext } from "../../context/ReRender";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  deleteDoc,
+  // eslint-disable-next-line no-unused-vars
+  doc,
+  // eslint-disable-next-line no-unused-vars
+  writeBatch,
+} from "firebase/firestore";
+import { db } from "../../config/firebase";
 
 // eslint-disable-next-line react/prop-types
 const EditForm = ({ visible, onCancel, initialValues, onFinish }) => {
@@ -163,18 +175,38 @@ const Employees = () => {
   const deleteEmployee = async (user) => {
     try {
       setIsLoading(true);
+
+      // First, delete the user from your own backend (assuming it's served by your server)
       const response = await axios.delete(
         `${API_URL}/employee/delete/${user._id}`,
         user
       );
+
       if (response.data.success) {
-        message.success(response.data.msg);
+        // Then, delete the user from Firestore
+        const collectionRef = collection(db, "users");
+        const querySnapshot = await getDocs(
+          query(collectionRef, where("email", "==", user.email))
+        );
+
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach((doc) => {
+            deleteDoc(doc.ref);
+          });
+
+          message.success(response.data.msg);
+        } else {
+          message.error(response.data.msg);
+        }
+
+        getAllEmployees(); // Refresh the user list after successful deletion
       } else {
         message.error(response.data.msg);
       }
-      getAllEmployees();
+
+      setIsLoading(false);
     } catch (error) {
-      console.log("error in deleteing the user", error);
+      console.log("error in deleting the user", error);
     }
   };
 
@@ -213,12 +245,14 @@ const Employees = () => {
             <List.Item
               className="border border-black rounded-lg my-2"
               actions={[
+                // eslint-disable-next-line react/jsx-key
                 <button
                   className="btn btn-secondary"
                   onClick={() => handleEdit(user)}
                 >
                   Edit
                 </button>,
+                // eslint-disable-next-line react/jsx-key
                 <button
                   className="btn btn-danger"
                   onClick={() => deleteEmployee(user)}
