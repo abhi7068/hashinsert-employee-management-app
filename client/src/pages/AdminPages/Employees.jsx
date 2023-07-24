@@ -213,12 +213,14 @@ const Employees = () => {
             <List.Item
               className="border border-black rounded-lg my-2"
               actions={[
+                // eslint-disable-next-line react/jsx-key
                 <button
                   className="btn btn-secondary"
                   onClick={() => handleEdit(user)}
                 >
                   Edit
                 </button>,
+                // eslint-disable-next-line react/jsx-key
                 <button
                   className="btn btn-danger"
                   onClick={() => deleteEmployee(user)}
