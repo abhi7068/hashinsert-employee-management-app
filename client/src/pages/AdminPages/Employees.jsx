@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Avatar, Button, List, Skeleton, Modal, Form, Input } from "antd";
+import { Avatar, List, Skeleton, Modal, Form, Input, message } from "antd";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +11,6 @@ import { RerenderContext } from "../../context/ReRender";
 
 // eslint-disable-next-line react/prop-types
 const EditForm = ({ visible, onCancel, initialValues, onFinish }) => {
-  console.log(initialValues);
   const [form] = Form.useForm();
   const finalUser = useContext(AuthContext);
   const navigate = useNavigate();
@@ -70,7 +69,7 @@ const EditForm = ({ visible, onCancel, initialValues, onFinish }) => {
           label="Email"
           rules={[{ required: true, message: "Please enter Department ID" }]}
         >
-          <Input />
+          <Input disabled />
         </Form.Item>
         <Form.Item
           name="hire_date"
@@ -89,6 +88,7 @@ const Employees = () => {
   const { snackbar, handleSnackbarClose } = React.useContext(SnackbarContext);
   const [editFormVisible, setEditFormVisible] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const { render } = useContext(RerenderContext);
   const API_URL = "https://server-sx5c.onrender.com";
 
@@ -111,41 +111,70 @@ const Employees = () => {
   };
 
   const handleFinish = (values) => {
-    const updatedUsers = users.map((user) => {
-      if (user._id === values._id) {
-        return { ...user, ...values };
-      }
-      return user;
-    });
-    const updatedUser = updatedUsers.find((user) => user._id == values._id);
-    postEmployeesData(updatedUser);
-    setUsers(updatedUsers);
-    setSelectedRow(null);
-    setEditFormVisible(false);
+    try {
+      const updatedUsers = users.map((user) => {
+        if (user._id === values._id) {
+          return { ...user, ...values };
+        }
+        return user;
+      });
+      const updatedUser = updatedUsers.find((user) => user._id == values._id);
+      editEmployeesData(updatedUser);
+      setUsers(updatedUsers);
+      setSelectedRow(null);
+      setEditFormVisible(false);
+      setIsLoading(false);
+    } catch (error) {
+      console.log("error in editing the details", error);
+    }
   };
 
   const [users, setUsers] = React.useState([]);
-  // const [Render] = React.useContext()
   const getAllEmployees = async () => {
     try {
+      setIsLoading(true);
       const response = await axios.get(`${API_URL}/employee/getAll`);
       const usersList = response.data.Employee;
       setUsers(usersList);
-      console.log(usersList);
+      setIsLoading(false);
     } catch (error) {
       console.log("error in getting all employees", error);
     }
   };
 
-  const postEmployeesData = async (user) => {
+  const editEmployeesData = async (user) => {
     try {
+      setIsLoading(true);
       const response = await axios.put(
         `${API_URL}/employee/update/${user._id}`,
         user
       );
-      console.log(response);
+      if (response.data.success) {
+        message.success("Data Successfully Updated");
+      } else {
+        message.error(response.data.msg);
+      }
+      setIsLoading(false);
     } catch (error) {
       console.log("error in posting employee data", error);
+    }
+  };
+
+  const deleteEmployee = async (user) => {
+    try {
+      setIsLoading(true);
+      const response = await axios.delete(
+        `${API_URL}/employee/delete/${user._id}`,
+        user
+      );
+      if (response.data.success) {
+        message.success(response.data.msg);
+      } else {
+        message.error(response.data.msg);
+      }
+      getAllEmployees();
+    } catch (error) {
+      console.log("error in deleteing the user", error);
     }
   };
 
@@ -173,37 +202,53 @@ const Employees = () => {
           New
         </button>
       </div>
-      <List
-        className="demo-loadmore-list"
-        dataSource={users}
-        renderItem={(user) => (
-          <List.Item
-            className="border border-black rounded-lg my-2"
-            actions={[
-              <button
-                className="btn btn-secondary"
-                key="list-loadmore-edit"
-                onClick={() => handleEdit(user)}
-              >
-                Edit
-              </button>,
-              // <button className="btn btn-primary" key="list-loadmore-more">
-              //   more
-              // </button>,
-            ]}
-          >
-            <List.Item.Meta
-              avatar={<Avatar src={"/MaleAvatar.svg"} />}
-              title={
-                <p>
-                  <b>{user.employee_name}</b>
-                </p>
-              }
-              description={`Employee ID: ${user.employee_id}, Email: ${user.email}, Hire Date: ${user.hire_date}`}
-            />
-          </List.Item>
-        )}
-      />
+      {console.log(users)}
+      {isLoading ? (
+        <Skeleton />
+      ) : (
+        <List
+          className="demo-loadmore-list"
+          dataSource={users}
+          renderItem={(user) => (
+            <List.Item
+              className="border border-black rounded-lg my-2"
+              actions={[
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => handleEdit(user)}
+                >
+                  Edit
+                </button>,
+                <button
+                  className="btn btn-danger"
+                  onClick={() => deleteEmployee(user)}
+                >
+                  Delete
+                </button>,
+              ]}
+            >
+              <List.Item.Meta
+                avatar={
+                  <Avatar
+                    src={
+                      user?.gender == "female"
+                        ? "/FemaleAvatar.svg"
+                        : "/MaleAvatar.svg"
+                    }
+                  />
+                }
+                title={
+                  <p>
+                    <b>{user.employee_name}</b>
+                  </p>
+                }
+                description={`Employee ID: ${user.employee_id}, Email: ${user.email}, Hire Date: ${user.hire_date}`}
+              />
+            </List.Item>
+          )}
+        />
+      )}
+
       <EditForm
         key={selectedRow?._id}
         visible={editFormVisible}
