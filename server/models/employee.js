@@ -5,14 +5,14 @@ const employeeSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    first_name: {
+    employee_name: {
       type: String,
       required: true,
     },
-    last_name: {
-      type: String,
-      required: true,
-    },
+    // last_name: {
+    //   type: String,
+    //   required: true,
+    // },
     email: {
       type: String,
       required: true,
@@ -20,6 +20,10 @@ const employeeSchema = new mongoose.Schema(
     phone_number: {
       type: String,
       required: true,
+    },
+    gender:{
+      type: String,
+      required :true
     },
     hire_date: {
       type: String,
@@ -29,8 +33,8 @@ const employeeSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    department_id: {
-      type: Number,
+    role: {
+      type: String,
       required: true,
     },
   },

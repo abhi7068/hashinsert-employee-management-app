@@ -7,6 +7,8 @@ import AddIcon from "@mui/icons-material/Add";
 import FormDialog from "../../components/Dialog";
 import MuiSnackbar from "../../components/Snackbar";
 import { SnackbarContext } from "../../context/SnackbarContext";
+import { RerenderContext } from "../../context/ReRender";
+
 // eslint-disable-next-line react/prop-types
 const EditForm = ({ visible, onCancel, initialValues, onFinish }) => {
   console.log(initialValues);
@@ -87,6 +89,7 @@ const Employees = () => {
   const { snackbar, handleSnackbarClose } = React.useContext(SnackbarContext);
   const [editFormVisible, setEditFormVisible] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const { render } = useContext(RerenderContext);
   const API_URL = "https://server-sx5c.onrender.com";
 
   const handleClose = () => {
@@ -122,7 +125,7 @@ const Employees = () => {
   };
 
   const [users, setUsers] = React.useState([]);
-
+  // const [Render] = React.useContext()
   const getAllEmployees = async () => {
     try {
       const response = await axios.get(`${API_URL}/employee/getAll`);
@@ -148,7 +151,7 @@ const Employees = () => {
 
   useEffect(() => {
     getAllEmployees();
-  }, []);
+  }, [render]);
 
   return (
     <>
