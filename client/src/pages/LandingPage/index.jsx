@@ -19,7 +19,7 @@ function LandingPage() {
     <>
       <div className="grid w-full tablet:grid-cols-1 grid-cols-2 gap-6 mb-14">
         <div className="w-full tablet:order-2 flex flex-col justify-evenly space-y-4">
-          <div className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-950">
+          <div className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-950">
             Employee Management App
           </div>
 
