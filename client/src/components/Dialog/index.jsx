@@ -16,6 +16,8 @@ import { db } from "../../config/firebase";
 import { SnackbarContext } from "../../context/SnackbarContext";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useContext } from "react";
+import { RerenderContext } from "../../context/ReRender";
 
 // Define the Yup validation schema
 const validationSchema = Yup.object().shape({
@@ -35,6 +37,7 @@ const validationSchema = Yup.object().shape({
 
 // eslint-disable-next-line react/prop-types
 export default function FormDialog({ open, handleClose }) {
+  const { updateRender } = useContext(RerenderContext);
   const usersCollection = collection(db, "users");
   const { handleSnackbarOpen } = React.useContext(SnackbarContext);
 
@@ -99,6 +102,7 @@ export default function FormDialog({ open, handleClose }) {
           resetForm();
           handleClose();
           handleSnackbarOpen("Employee added successfully", "success");
+          updateRender();
         } else {
           resetForm();
           handleClose();

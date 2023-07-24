@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Table, Modal, Form, Input } from "antd";
-// import axios from "axios";
+import { Avatar, List, Skeleton, Modal, Form, Input, message } from "antd";
+import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import FormDialog from "../../components/Dialog";
 import MuiSnackbar from "../../components/Snackbar";
 import { SnackbarContext } from "../../context/SnackbarContext";
+import { RerenderContext } from "../../context/ReRender";
+
 // eslint-disable-next-line react/prop-types
 const EditForm = ({ visible, onCancel, initialValues, onFinish }) => {
   const [form] = Form.useForm();
@@ -17,13 +19,19 @@ const EditForm = ({ visible, onCancel, initialValues, onFinish }) => {
     form
       .validateFields()
       .then((values) => {
-        console.log(values);
-        onFinish(values);
+        onFinish({
+          ...initialValues,
+          employee_id: values.employee_id,
+          employee_name: values.employee_name,
+          email: values.email,
+          hire_date: values.hire_date,
+        });
       })
       .catch((error) => {
         console.error("Validation error:", error);
       });
   };
+
   // navigate to / if user is not logged in
   useEffect(() => {
     if (!finalUser?.user?.email) {
@@ -47,21 +55,21 @@ const EditForm = ({ visible, onCancel, initialValues, onFinish }) => {
           label="ID"
           rules={[{ required: true, message: "Please enter ID" }]}
         >
-          <Input disabled />
+          <Input />
         </Form.Item>
         <Form.Item
-          name="first_name"
+          name="employee_name"
           label="Name"
           rules={[{ required: true, message: "Please enter Name" }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
-          name="department_id"
-          label="Department ID"
+          name="email"
+          label="Email"
           rules={[{ required: true, message: "Please enter Department ID" }]}
         >
-          <Input />
+          <Input disabled />
         </Form.Item>
         <Form.Item
           name="hire_date"
@@ -78,6 +86,12 @@ const EditForm = ({ visible, onCancel, initialValues, onFinish }) => {
 const Employees = () => {
   const [open, setOpen] = React.useState(false);
   const { snackbar, handleSnackbarClose } = React.useContext(SnackbarContext);
+  const [editFormVisible, setEditFormVisible] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const { render } = useContext(RerenderContext);
+  const API_URL = "https://server-sx5c.onrender.com";
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -85,85 +99,88 @@ const Employees = () => {
   const handleDialogOpen = () => {
     setOpen(true);
   };
-  const [editFormVisible, setEditFormVisible] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(null);
-  // const API_URL = "http://localhost:4000";
 
   const handleEdit = (values) => {
-    setSelectedRow(values);
+    setSelectedRow({ ...values });
     setEditFormVisible(true);
   };
+
   const handleCancel = () => {
     setSelectedRow(null);
     setEditFormVisible(false);
   };
+
   const handleFinish = (values) => {
-    const updatedUsers = users.map((user) => {
-      if (user.employee_id === values.employee_id) {
-        return { ...user, ...values };
-      }
-      return user;
-    });
-    setUsers(updatedUsers);
-    setSelectedRow(null);
-    setEditFormVisible(false);
+    try {
+      const updatedUsers = users.map((user) => {
+        if (user._id === values._id) {
+          return { ...user, ...values };
+        }
+        return user;
+      });
+      const updatedUser = updatedUsers.find((user) => user._id == values._id);
+      editEmployeesData(updatedUser);
+      setUsers(updatedUsers);
+      setSelectedRow(null);
+      setEditFormVisible(false);
+      setIsLoading(false);
+    } catch (error) {
+      console.log("error in editing the details", error);
+    }
   };
+
   const [users, setUsers] = React.useState([]);
+  const getAllEmployees = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(`${API_URL}/employee/getAll`);
+      const usersList = response.data.Employee;
+      setUsers(usersList);
+      setIsLoading(false);
+    } catch (error) {
+      console.log("error in getting all employees", error);
+    }
+  };
 
-  // const getAllEmployees = async () => {
-  //   try {
-  //     const response = await axios.get(`${API_URL}/employee/getAll`);
-  //     const usersList = response.data.Employee;
-  //     setUsers(usersList);
-  //     console.log(usersList);
-  //   } catch (error) {
-  //     console.log("error in getting all employees", error);
-  //   }
-  // };
+  const editEmployeesData = async (user) => {
+    try {
+      setIsLoading(true);
+      const response = await axios.put(
+        `${API_URL}/employee/update/${user._id}`,
+        user
+      );
+      if (response.data.success) {
+        message.success("Data Successfully Updated");
+      } else {
+        message.error(response.data.msg);
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.log("error in posting employee data", error);
+    }
+  };
 
-  // useEffect(() => {
-  //   getAllEmployees();
-  // }, []);
+  const deleteEmployee = async (user) => {
+    try {
+      setIsLoading(true);
+      const response = await axios.delete(
+        `${API_URL}/employee/delete/${user._id}`,
+        user
+      );
+      if (response.data.success) {
+        message.success(response.data.msg);
+      } else {
+        message.error(response.data.msg);
+      }
+      getAllEmployees();
+    } catch (error) {
+      console.log("error in deleteing the user", error);
+    }
+  };
 
-  const columns = [
-    {
-      title: "Id",
-      dataIndex: "employee_id",
-    },
-    {
-      title: "Name",
-      dataIndex: "first_name",
-    },
-    {
-      title: "Desk",
-      dataIndex: "department_id",
-    },
-    {
-      title: "Hire Date",
-      dataIndex: "hire_date",
-    },
-    {
-      title: "Actions",
-      dataIndex: "actions",
-      render: (text, record) => (
-        <>
-          <span className="text-center m-2 ">
-            <button
-              className="btn btn-secondary font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white "
-              onClick={() => handleEdit(record)}
-            >
-              Edit
-            </button>
-          </span>
-          <span className="text-center m-2 ">
-            <button className="btn btn-danger font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white ">
-              Block
-            </button>
-          </span>
-        </>
-      ),
-    },
-  ];
+  useEffect(() => {
+    getAllEmployees();
+  }, [render]);
 
   return (
     <>
@@ -185,8 +202,55 @@ const Employees = () => {
           New
         </button>
       </div>
-      <Table columns={columns} dataSource={users}></Table>
+      {console.log(users)}
+      {isLoading ? (
+        <Skeleton />
+      ) : (
+        <List
+          className="demo-loadmore-list"
+          dataSource={users}
+          renderItem={(user) => (
+            <List.Item
+              className="border border-black rounded-lg my-2"
+              actions={[
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => handleEdit(user)}
+                >
+                  Edit
+                </button>,
+                <button
+                  className="btn btn-danger"
+                  onClick={() => deleteEmployee(user)}
+                >
+                  Delete
+                </button>,
+              ]}
+            >
+              <List.Item.Meta
+                avatar={
+                  <Avatar
+                    src={
+                      user?.gender == "female"
+                        ? "/FemaleAvatar.svg"
+                        : "/MaleAvatar.svg"
+                    }
+                  />
+                }
+                title={
+                  <p>
+                    <b>{user.employee_name}</b>
+                  </p>
+                }
+                description={`Employee ID: ${user.employee_id}, Email: ${user.email}, Hire Date: ${user.hire_date}`}
+              />
+            </List.Item>
+          )}
+        />
+      )}
+
       <EditForm
+        key={selectedRow?._id}
         visible={editFormVisible}
         onCancel={handleCancel}
         initialValues={selectedRow}
