@@ -139,6 +139,7 @@ const Employees = () => {
       setIsLoading(false);
     } catch (error) {
       console.log("error in getting all employees", error);
+      setIsLoading(false);
     }
   };
 
@@ -157,6 +158,7 @@ const Employees = () => {
       setIsLoading(false);
     } catch (error) {
       console.log("error in posting employee data", error);
+      setIsLoading(false);
     }
   };
 
@@ -175,6 +177,7 @@ const Employees = () => {
       getAllEmployees();
     } catch (error) {
       console.log("error in deleteing the user", error);
+      setIsLoading(false);
     }
   };
 
