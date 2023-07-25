@@ -20,12 +20,14 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
+import Search from "antd/es/input/Search";
 
 // eslint-disable-next-line react/prop-types
 const EditForm = ({ visible, onCancel, initialValues, onFinish }) => {
   const [form] = Form.useForm();
   const finalUser = useContext(AuthContext);
   const navigate = useNavigate();
+  const { Search } = Input;
 
   const handleFinish = () => {
     form
@@ -101,6 +103,7 @@ const Employees = () => {
   const [editFormVisible, setEditFormVisible] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
   const { render } = useContext(RerenderContext);
   const API_URL = "https://server-sx5c.onrender.com";
 
@@ -147,7 +150,10 @@ const Employees = () => {
       setIsLoading(true);
       const response = await axios.get(`${API_URL}/employee/getAll`);
       const usersList = response.data.Employee;
-      setUsers(usersList);
+      const filteredUsers = usersList.filter((user) =>
+        user.employee_name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setUsers(filteredUsers);
       setIsLoading(false);
     } catch (error) {
       console.log("error in getting all employees", error);
@@ -177,7 +183,6 @@ const Employees = () => {
   const deleteEmployee = async (user) => {
     try {
       setIsLoading(true);
-
       // First, delete the user from your own backend (assuming it's served by your server)
       const response = await axios.delete(
         `${API_URL}/employee/delete/${user._id}`,
@@ -205,7 +210,6 @@ const Employees = () => {
       } else {
         message.error(response.data.msg);
       }
-
       setIsLoading(false);
     } catch (error) {
       console.log("error in deleteing the user", error);
@@ -213,9 +217,13 @@ const Employees = () => {
     }
   };
 
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
+
   useEffect(() => {
     getAllEmployees();
-  }, [render]);
+  }, [render, searchQuery]);
 
   return (
     <>
@@ -226,8 +234,14 @@ const Employees = () => {
         severity={snackbar.severity}
       />
       <FormDialog open={open} handleClose={handleClose} />
+      <h2>Employees</h2>
       <div className=" flex flex-row justify-between py-4 mb-4 items-center">
-        <h2>Employees</h2>
+        <Search
+          placeholder="Search employees..."
+          allowClear
+          onSearch={handleSearch}
+          style={{ width: 200 }}
+        />
         {/* add a dialog box here with email field and add and cancel buttons  */}
         <button
           className="bg-primary-button font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white "
@@ -237,7 +251,7 @@ const Employees = () => {
           New
         </button>
       </div>
-      {console.log(users)}
+
       {isLoading ? (
         <Skeleton />
       ) : (
