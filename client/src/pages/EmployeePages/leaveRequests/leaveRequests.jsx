@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
-import "./leaveRequest.css";
-import LeaveRequestForm from "./leaveRequestForm";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import {auth,db} from '../../../config/firebase';
+import LeaveRequestForm from './leaveRequestForm';
 
 const EmpleaveRequests = () => {
     const [showForm, setShowForm] = useState(false);
-
-    const [leaveData, setLeaveData] = useState([
-        { id: 1, date: "2023-07-01", reason: "Vacation", status: "approved" },
-        { id: 2, date: "2023-07-05", reason: "Personal", status: "denied" },
-        { id: 3, date: "2023-07-10", reason: "Sick", status: "approved" },
-    ]);
+    const [leaveRequests, setLeaveRequests] = useState([]);
+    const API_URL = "http://localhost:4000";
+    const currentUser = auth.currentUser;
+    // const [leaveData, setLeaveData] = useState([
+    //     { id: 1, date: "2023-07-01", reason: "Vacation", status: "approved" },
+    //     { id: 2, date: "2023-07-05", reason: "Personal", status: "denied" },
+    //     { id: 3, date: "2023-07-10", reason: "Sick", status: "approved" },
+    // ]);
 
     const handleFormVisibility = () => {
         setShowForm(!showForm);
@@ -19,35 +22,50 @@ const EmpleaveRequests = () => {
         setLeaveData([newLeaveRequest,...leaveData]);
         setShowForm(false);
     }
+    useEffect(() => {
+        // Fetch leave requests from the backend API
+        axios.get(`${API_URL}/leaverequest/getAll/${currentUser.email}`)
+          .then((response) => {
+            console.log(response)
+            setLeaveRequests(response.data.data);
+          })
+          .catch((error) => {
+            console.log('Error fetching leave requests:', error);
+          });
+      }, []);
 
     return (
         <div>
 
             <div className='header'>
                 <h1>Leave Requests</h1>
-                <button onClick={handleFormVisibility}>+</button>
+                <h1><button onClick={handleFormVisibility}>+</button></h1>
             </div>
 
-            {showForm? (<LeaveRequestForm onSubmit = {handleFormSubmit}/>):(
+            {showForm? (<LeaveRequestForm />):(
                 <table>
-                <thead>
+                    <thead>
                     <tr>
-
-                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
                         <th>Reason</th>
                         <th>Status</th>
                     </tr>
-                </thead>
-                <tbody>
-                    {leaveData.map((leave) => (
-                        <tr key={leave.id}>
-
-                            <td>{leave.date}</td>
-                            <td>{leave.reason}</td>
-                            <td>{leave.status}</td>
+                    </thead>
+                    <tbody>
+                    {leaveRequests.map((leaveRequest) => (
+                        <tr key={leaveRequest._id}>
+                        <td>{leaveRequest.employee_name}</td>
+                        <td>{leaveRequest.employee_email}</td>
+                        <td>{leaveRequest.start_date}</td>
+                        <td>{leaveRequest.end_date}</td>
+                        <td>{leaveRequest.reason}</td>
+                        <td>{leaveRequest.status}</td>
                         </tr>
                     ))}
-                </tbody>
+                    </tbody>
             </table>
             )}
             
