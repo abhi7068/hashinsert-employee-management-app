@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: [
-      "http://localhost:3000",
+      "http://localhost:5173",
       "https://employee-management-app-je5w.onrender.com",
     ],
     credentials: true,
