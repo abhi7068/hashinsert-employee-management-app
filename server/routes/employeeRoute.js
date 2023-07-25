@@ -4,7 +4,7 @@ const {saveEmployee} = require('../controllers/employeeController')
 router.post('/save',saveEmployee);
 
 const {getOneEmployee} = require('../controllers/employeeController')
-router.get("/getOne/:id",getOneEmployee);
+router.get("/getOne/:email",getOneEmployee);
 
 const {getAll} = require('../controllers/employeeController')
 router.get("/getAll",getAll)
