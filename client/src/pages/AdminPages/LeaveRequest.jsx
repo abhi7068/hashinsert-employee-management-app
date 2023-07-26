@@ -1,64 +1,17 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
-import { Table } from "antd";
+import { List, message } from "antd";
+import axios from "axios";
 
 const LeaveRequest = () => {
   const finalUser = useContext(AuthContext);
   const navigate = useNavigate();
-  const users = [
-    {
-      employee_id: "1",
-      employee_name: "Mike",
-      desk: 32,
-      leave_details: "Personal",
-    },
-    {
-      employee_id: "2",
-      employee_name: "John",
-      desk: 42,
-      leave_details: "Medical",
-    },
-  ];
-  const columns = [
-    {
-      title: "Id",
-      dataIndex: "employee_id",
-    },
-    {
-      title: "Name",
-      dataIndex: "employee_name",
-    },
-    {
-      title: "Desk",
-      dataIndex: "desk",
-    },
-    {
-      title: "Details",
-      dataIndex: "leave_details",
-    },
-    {
-      title: "Actions",
-      dataIndex: "actions",
-      // eslint-disable-next-line no-unused-vars
-      render: (text, record) => (
-        <>
-          <span className="text-center m-2 ">
-            <button className="btn btn-success font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white ">
-              Accept
-            </button>
-          </span>
-          <span className="text-center m-2 ">
-            <button className="btn btn-danger font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white ">
-              Decline
-            </button>
-          </span>
-        </>
-      ),
-    },
-  ];
+  const [leaves, setLeaves] = useState([]);
+  const API_URL = "https://server-sx5c.onrender.com";
+
   // navigate to / if user is not logged in
 
   useEffect(() => {
@@ -66,14 +19,89 @@ const LeaveRequest = () => {
       navigate("/");
     }
   }, [finalUser?.user?.email]);
+
+  const getAllLeaves = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/leaverequest/getAll`);
+      setLeaves(response.data.leaveRequest);
+    } catch (error) {
+      console.log("error in getting the leave requests", error);
+    }
+  };
+
+  const updateLeave = async (leave, leaveStatus) => {
+    try {
+      leave.status = leaveStatus;
+      const response = await axios.put(
+        `${API_URL}/leaverequest/update/${leave._id}`,
+        leave
+      );
+      if (response.data.success) {
+        message.success(`${leave.employee_name}'s leave ${leaveStatus}`);
+        axios
+          .delete(`${API_URL}/leaverequest/delete/${leave._id}`)
+          .then(() => getAllLeaves());
+      } else {
+        message.error(response.data.msg);
+      }
+    } catch (error) {
+      console.log("error in updating the leave status", error);
+    }
+  };
+
+  useEffect(() => {
+    getAllLeaves();
+  }, []);
+
   return (
     <>
       <h2>Leave Requests</h2>
-      <Table
-        columns={columns}
-        dataSource={users}
-        key={users.employee_id}
-      ></Table>
+      <List
+        className="demo-loadmore-list"
+        itemLayout="horizontal"
+        dataSource={leaves}
+        renderItem={(leave) => (
+          <List.Item
+            className="border border-black rounded-lg my-2 flex flex-wrap"
+            actions={[
+              <button
+                className="btn btn-success gy-2"
+                onClick={() => {
+                  updateLeave(leave, "accepted");
+                }}
+              >
+                Accept
+              </button>,
+              <button
+                className="btn btn-danger"
+                onClick={() => {
+                  updateLeave(leave, "rejected");
+                }}
+              >
+                Reject
+              </button>,
+            ]}
+          >
+            <List.Item.Meta
+              className="p px-2"
+              title={
+                <div>
+                  <b>{leave.employee_name}</b>
+                </div>
+              }
+              description={
+                // `Reason: ${leave.reason}, Strat Date: ${leave.start_date}, End Date: ${leave.end_date}`
+                <div>
+                  <p>Reason: {leave.reason}</p>
+                  <p>
+                    Date: {leave.start_date} to {leave.end_date}
+                  </p>
+                </div>
+              }
+            />
+          </List.Item>
+        )}
+      />
     </>
   );
 };

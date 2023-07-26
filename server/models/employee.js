@@ -21,6 +21,10 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    gender:{
+      type: String,
+      required :true
+    },
     hire_date: {
       type: String,
       required: true,

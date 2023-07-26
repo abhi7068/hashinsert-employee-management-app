@@ -4,13 +4,16 @@ import App from "./App.jsx";
 import "./index.css";
 import AuthProviderContext from "./context/AuthContext.jsx";
 import SnackbarContextProvider from "./context/SnackbarContext.jsx";
+import ReRender from "./context/ReRender.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProviderContext>
-      <SnackbarContextProvider>
-        <App />
-      </SnackbarContextProvider>
-    </AuthProviderContext>
+    <ReRender>
+      <AuthProviderContext>
+        <SnackbarContextProvider>
+          <App />
+        </SnackbarContextProvider>
+      </AuthProviderContext>
+    </ReRender>
   </React.StrictMode>
 );

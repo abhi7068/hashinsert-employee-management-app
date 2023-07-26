@@ -3,6 +3,8 @@ import {auth,db} from '../../../config/firebase';
 import 'firebase/auth';
 import axios from 'axios';
 const Profile = () => {
+//   const navigate = useNavigate();
+//   const finalUser = React.useContext(AuthContext);
 
     const [userData, setUserData] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
