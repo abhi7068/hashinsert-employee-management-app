@@ -26,6 +26,9 @@ app.use("/employee/", employeeRoute);
 const leaveRequestRoute = require("./routes/leaveRequestRoute");
 app.use("/leaverequest/", leaveRequestRoute);
 
+const timesheetRoute = require("./routes/timesheetRoute");
+app.use("/timesheet/", timesheetRoute);
+
 app.get("/", (req, res) => {
   return res.json("hi there");
 });
