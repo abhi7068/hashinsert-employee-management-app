@@ -3,6 +3,7 @@ const leaveRequest = require('../models/leave')
 const saveleaveRequest = async (req, res) => {
     const newRequest = leaveRequest({
         employee_name: req.body.employee_name,
+        employee_email:req.body.employee_email,
         start_date: req.body.start_date,
         end_date: req.body.end_date,
         reason: req.body.reason,
@@ -41,6 +42,20 @@ const getAll = async(req,res)=>{
     }
 }
 
+const getAllByEmail = async(req,res)=>{
+    const filter = {employee_email :req.params.email};
+    console.log(filter)
+    const result = await leaveRequest.find(filter);
+    // console.log(result)
+    try {
+        // Find all leave requests with the matching email
+        // const leaveRequests = await leaveRequest.find({ email: filter });
+        return res.status(200).send({success:true,data:result});
+      } catch (error) {
+        res.status(500).json({ message: 'Error fetching leave requests' });
+      }
+}
+
 const deleteLeaveRequest = async(req,res)=>{
     const filter = {_id :req.params.id};
     const result=await leaveRequest.deleteOne(filter);
@@ -63,6 +78,7 @@ const updateLeaveRequest =async(req,res)=>{
     try {
         const result=await leaveRequest.findOneAndUpdate(filter,{
             employee_name: req.body.employee_name,
+            employee_email:req.body.employee_email,
             start_date: req.body.start_date,
             end_date: req.body.end_date,
             reason: req.body.reason,
@@ -75,4 +91,4 @@ const updateLeaveRequest =async(req,res)=>{
 }
 
 
-module.exports = {saveleaveRequest,getOneLeaveRequest,getAll,deleteLeaveRequest,updateLeaveRequest};
+module.exports = {saveleaveRequest,getOneLeaveRequest,getAll,getAllByEmail,deleteLeaveRequest,updateLeaveRequest};

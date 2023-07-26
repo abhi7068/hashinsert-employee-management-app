@@ -22,7 +22,7 @@ const saveEmployee = async(req,res)=>{
 }
 
 const getOneEmployee = async(req,res)=>{
-    const filter = {_id :req.params.id};
+    const filter = {email :req.params.email};
     const data = await Employee.findOne(filter);
     if(data){
         // return res.json(data);
