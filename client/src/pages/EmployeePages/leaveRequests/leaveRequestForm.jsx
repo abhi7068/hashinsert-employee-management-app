@@ -1,6 +1,14 @@
 import React from 'react';
 import { useState,useEffect } from 'react';
 import axios from 'axios';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import LeaveRequests from './leaveRequests'
+
 
 const LeaveRequestForm = () => {
     // const [date, setDate] = useState("");
@@ -42,7 +50,9 @@ const LeaveRequestForm = () => {
   
           // Fetch the updated leave requests to update the table
         //   fetchLeaveRequests();
+            <LeaveRequests />
           alert('Leave request submitted successfully!');
+
         })
         .catch((error) => {
           console.log('Error submitting leave request:', error);
@@ -65,64 +75,70 @@ const LeaveRequestForm = () => {
         //         <button type='submit'>Submit</button>
         //     </form>
         // </div>
-        <div>
-        <h2>Leave Request Form</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="email">E-mail:</label>
-            <input
-              type="text"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="startDate">Start Date:</label>
-            <input
-              type="date"
-              id="startDate"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="endDate">End Date:</label>
-            <input
-              type="date"
-              id="endDate"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="reason">Reason:</label>
-            <textarea
-              id="reason"
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="status">Status:</label>
-            <h3>pending</h3>
-          </div>
-          <button type="submit">Submit</button>
-        </form>
+        <div style={{marginLeft: '30%'}}>
+        <Card sx={{ maxWidth: 500 }}>
+            <CardContent>
+            <Typography variant='h3'  gutterBottom><h2>Leave Request Form</h2></Typography>
+                <form onSubmit={handleSubmit}>
+                <div>
+                    <label htmlFor="name">Name:</label>
+                    <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    />
+                </div>
+                <div>
+                    <label htmlFor="email">E-mail:</label>
+                    <input
+                    type="text"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    />
+                </div>
+                <div>
+                    <label htmlFor="startDate">Start Date:</label>
+                    <input
+                    type="date"
+                    id="startDate"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    required
+                    />
+                </div>
+                <div>
+                    <label htmlFor="endDate">End Date:</label>
+                    <input
+                    type="date"
+                    id="endDate"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    required
+                    />
+                </div>
+                <div>
+                    <label htmlFor="reason">Reason:</label>
+                    <textarea
+                    id="reason"
+                    value={reason}
+                    onChange={(e) => setReason(e.target.value)}
+                    required
+                    />
+                </div>
+                <div>
+                    <label htmlFor="status">Status:</label>
+                    <h3>pending</h3>
+                </div>
+                <Box textAlign='center'>
+                <Button variant="contained" type="submit">Submit</Button>
+                </Box>
+                </form>
+            </CardContent>
+        </Card>
       </div>
     );
 };

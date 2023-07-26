@@ -2,11 +2,20 @@ import React, { useEffect, useState } from 'react';
 import {auth,db} from '../../../config/firebase';
 import 'firebase/auth';
 import axios from 'axios';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+
+
+
 const Profile = () => {
 //   const navigate = useNavigate();
 //   const finalUser = React.useContext(AuthContext);
 
-    const [userData, setUserData] = useState([]);
+    const [userData, setUserData] = useState({});
     const [isEditing, setIsEditing] = useState(false);
     const currentUser = auth.currentUser;
     const API_URL = "https://server-sx5c.onrender.com";
@@ -39,7 +48,7 @@ const Profile = () => {
         })
         .then((response) => {
             // Update the state with the updated data
-            setUserData([response.data.Employee]);
+            setUserData(response.data.data);
             setIsEditing(false);
             alert('Data updated successfully!');
           })
@@ -49,34 +58,40 @@ const Profile = () => {
           });
     }
     return (
-        <div>
-            <h1> WELCOME <b>{userData.employee_name}</b></h1>
-            {!isEditing &&
-            (<div>
-            <p>Employee ID: {userData?.employee_id}</p>
-            <p>Name: {userData?.employee_name}</p>
-            <p>Gender: {userData?.gender}</p>
-            <p>Contact: {userData.phone_number}</p>
-            <p>Email: {userData?.email}</p>
-            <p>salary: {userData?.salary}</p>
-            <p>Position: {userData?.role}</p>
-            {/* Add more details here based on your employee data */}
-            </div>)}
-            {isEditing && (
-                <form onSubmit={handleEditSubmit}>
-                    <div>
-                        <label>
-                        Name:
-                        <input type="text" name="empname" defaultValue={userData.employee_name} />
-                        </label>
-                    </div>
-                    <button type="submit">Save</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button onClick={() => setIsEditing(false)}>Cancel</button>
-                </form>
-            )}
-            {!isEditing && (
-                <button onClick={() => setIsEditing(true)}>Edit</button>
-            )}
+        <div style={{marginLeft: '30%'}}>
+            <Card sx={{ maxWidth: 500 }}>
+            <CardContent>
+                <Typography variant='h3'  gutterBottom> WELCOME <b>{userData.employee_name}</b></Typography>
+                {/* <Typography variant="body1"> */}
+                {!isEditing &&
+                (<div>
+                <p>Employee ID: {userData?.employee_id}</p>
+                <p>Name: {userData?.employee_name}</p>
+                <p>Gender: {userData?.gender}</p>
+                <p>Contact: {userData.phone_number}</p>
+                <p>Email: {userData?.email}</p>
+                <p>salary: {userData?.salary}</p>
+                <p>Position: {userData?.role}</p>
+                {/* Add more details here based on your employee data */}
+                </div>)}
+                {isEditing && (
+                    <form onSubmit={handleEditSubmit}>
+                        <div>
+                            Name:
+                            <input type="text" name="empname" defaultValue={userData.employee_name} /><br />
+                        </div>
+                        <Button variant="contained" color="success" type="submit">Save</Button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <Button variant="contained" color="error" onClick={() => setIsEditing(false)}>Cancel</Button>
+                    </form>
+                )}
+                {/* </Typography> */}
+            <Box textAlign='center'>
+                {!isEditing && (
+                    <Button variant="contained" onClick={() => setIsEditing(true)}>Edit</Button>
+                )}
+            </Box>
+            </CardContent>
+            </Card>
         </div>
     );
 };
