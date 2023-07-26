@@ -19,7 +19,7 @@ const LeaveRequestForm = () => {
     const [endDate, setEndDate] = useState('');
     const [reason, setReason] = useState('');
     const [status, setStatus] = useState('pending');
-    const API_URL = "http://localhost:4000";
+    const API_URL = "https://server-sx5c.onrender.com";
     const handleSubmit = (e) => {
         e.preventDefault();
         const leaveRequestData = {

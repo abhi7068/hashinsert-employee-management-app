@@ -9,7 +9,7 @@ const Profile = () => {
     const [userData, setUserData] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const currentUser = auth.currentUser;
-    const API_URL = "http://localhost:4000";
+    const API_URL = "https://server-sx5c.onrender.com";
     console.log(currentUser)
 
 //   useEffect(() => {

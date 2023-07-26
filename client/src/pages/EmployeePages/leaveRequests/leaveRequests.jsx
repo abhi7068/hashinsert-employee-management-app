@@ -6,7 +6,7 @@ import LeaveRequestForm from './leaveRequestForm';
 const EmpleaveRequests = () => {
     const [showForm, setShowForm] = useState(false);
     const [leaveRequests, setLeaveRequests] = useState([]);
-    const API_URL = "http://localhost:4000";
+    const API_URL = "https://server-sx5c.onrender.com";
     const currentUser = auth.currentUser;
     // const [leaveData, setLeaveData] = useState([
     //     { id: 1, date: "2023-07-01", reason: "Vacation", status: "approved" },
