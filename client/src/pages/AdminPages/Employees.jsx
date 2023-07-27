@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Avatar, List, Skeleton, message, Tooltip } from "antd";
 import axios from "axios";
-import AddIcon from "@mui/icons-material/Add";
+// import AddIcon from "@mui/icons-material/Add";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import FormDialog from "../../components/Dialog";
 import MuiSnackbar from "../../components/Snackbar";
 import NewTeam from "../../components/Modals/NewTeam";
@@ -71,6 +73,7 @@ const Employees = () => {
     setEditFormVisible(false);
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleDeleteModal = () => {
     setDeleteModal(!deleteModal);
   };
@@ -190,7 +193,19 @@ const Employees = () => {
         severity={snackbar.severity}
       />
       <FormDialog open={open} handleClose={handleClose} />
-      <h2>Employees</h2>
+      <div className=" flex justify-between items-start ">
+        <h2 className=" text-xl font-bold">Employees</h2>
+        <Tooltip title="Add New Employee">
+          <button
+            className="bg-primary-button font-medium px-4 py-2 rounded-full text-lg text-text-color inline-block text-white "
+            onClick={handleDialogOpen}
+          >
+            {/* <AddIcon className="  inline text-inherit" />
+          New */}
+            <PersonAddAlt1Icon />
+          </button>
+        </Tooltip>
+      </div>
       <div className=" flex flex-row justify-between py-4 mb-4 items-center">
         <Search
           placeholder="Search employees..."
@@ -199,20 +214,16 @@ const Employees = () => {
           style={{ width: 200 }}
         />
         {/* add a dialog box here with email field and add and cancel buttons  */}
-        <button
-          className="bg-primary-button font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white "
-          onClick={handleDialogOpen}
-        >
-          <AddIcon className="  inline text-inherit" />
-          New
-        </button>
-        <button
-          className="bg-primary-button font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white "
-          onClick={handleNewTeamButton}
-        >
-          <AddIcon className="inline text-inherit" />
-          New Team
-        </button>
+        <Tooltip title="Add to a Team">
+          <button
+            className="bg-primary-button font-medium px-4 py-2 rounded-full text-lg text-text-color inline-block text-white "
+            onClick={handleNewTeamButton}
+          >
+            {/* <AddIcon className="inline text-inherit" />
+          New Team */}
+            <GroupAddIcon />
+          </button>
+        </Tooltip>
       </div>
 
       {isLoading ? (
