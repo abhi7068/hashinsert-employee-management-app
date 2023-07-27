@@ -72,6 +72,7 @@ const LeaveRequest = () => {
           <List.Item
             className="border border-black rounded-lg my-2 flex flex-wrap"
             actions={[
+              // eslint-disable-next-line react/jsx-key
               <button
                 className="btn btn-success gy-2"
                 onClick={() => {
@@ -80,6 +81,7 @@ const LeaveRequest = () => {
               >
                 Accept
               </button>,
+              // eslint-disable-next-line react/jsx-key
               <button
                 className="btn btn-danger"
                 onClick={() => {
