@@ -1,13 +1,19 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Avatar, List, Skeleton, Modal, Form, Input, message } from "antd";
+import { Avatar, List, Skeleton, message, Tooltip } from "antd";
 import axios from "axios";
-import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import FormDialog from "../../components/Dialog";
 import MuiSnackbar from "../../components/Snackbar";
+import NewTeam from "../../components/Modals/NewTeam";
+import { Teams } from "../../components/Modals/Teams";
+import { EditForm } from "../../components/Modals/EditForm";
 import { SnackbarContext } from "../../context/SnackbarContext";
 import { RerenderContext } from "../../context/ReRender";
+import {
+  UserDeleteOutlined,
+  EditOutlined,
+  UsergroupAddOutlined,
+} from "@ant-design/icons";
 import {
   collection,
   query,
@@ -22,80 +28,9 @@ import {
 import { db } from "../../config/firebase";
 import Search from "antd/es/input/Search";
 
+import "../../App.css";
+// import DeleteUser from "../../components/Modals/DeleteUser";
 // eslint-disable-next-line react/prop-types
-const EditForm = ({ visible, onCancel, initialValues, onFinish }) => {
-  const [form] = Form.useForm();
-  const finalUser = useContext(AuthContext);
-  const navigate = useNavigate();
-  const { Search } = Input;
-
-  const handleFinish = () => {
-    form
-      .validateFields()
-      .then((values) => {
-        onFinish({
-          ...initialValues,
-          employee_id: values.employee_id,
-          employee_name: values.employee_name,
-          email: values.email,
-          hire_date: values.hire_date,
-        });
-      })
-      .catch((error) => {
-        console.error("Validation error:", error);
-      });
-  };
-
-  // navigate to / if user is not logged in
-  useEffect(() => {
-    if (!finalUser?.user?.email) {
-      navigate("/");
-    }
-  }, [finalUser?.user?.email]);
-
-  return (
-    <Modal
-      title="Basic Modal"
-      open={visible}
-      onCancel={onCancel}
-      onOk={handleFinish}
-      okButtonProps={{
-        style: { backgroundColor: "blue", borderColor: "blue" },
-      }}
-    >
-      <Form form={form} initialValues={initialValues} onFinish={handleFinish}>
-        <Form.Item
-          name="employee_id"
-          label="ID"
-          rules={[{ required: true, message: "Please enter ID" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="employee_name"
-          label="Name"
-          rules={[{ required: true, message: "Please enter Name" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="email"
-          label="Email"
-          rules={[{ required: true, message: "Please enter Department ID" }]}
-        >
-          <Input disabled />
-        </Form.Item>
-        <Form.Item
-          name="hire_date"
-          label="Hire Date"
-          rules={[{ required: true, message: "Please enter Hire Date" }]}
-        >
-          <Input />
-        </Form.Item>
-      </Form>
-    </Modal>
-  );
-};
 
 const Employees = () => {
   const [open, setOpen] = React.useState(false);
@@ -104,6 +39,9 @@ const Employees = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [teamModalVisible, setTeamModalVisible] = useState(false);
+  const [newTeamModalVisible, setNewTeamModalVisible] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const { render } = useContext(RerenderContext);
   const API_URL = "https://server-sx5c.onrender.com";
 
@@ -120,9 +58,21 @@ const Employees = () => {
     setEditFormVisible(true);
   };
 
+  const handleNewTeamButton = () => {
+    setNewTeamModalVisible(!newTeamModalVisible);
+  };
+
+  const handleTeam = () => {
+    setTeamModalVisible(!teamModalVisible);
+  };
+
   const handleCancel = () => {
     setSelectedRow(null);
     setEditFormVisible(false);
+  };
+
+  const handleDeleteModal = () => {
+    setDeleteModal(!deleteModal);
   };
 
   const handleFinish = (values) => {
@@ -150,8 +100,13 @@ const Employees = () => {
       setIsLoading(true);
       const response = await axios.get(`${API_URL}/employee/getAll`);
       const usersList = response.data.Employee;
-      const filteredUsers = usersList.filter((user) =>
-        user.employee_name.toLowerCase().includes(searchQuery.toLowerCase())
+      const filteredUsers = usersList.filter(
+        (user) =>
+          user.employee_name
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          user.employee_id.toString().includes(searchQuery)
       );
       setUsers(filteredUsers);
       setIsLoading(false);
@@ -217,8 +172,9 @@ const Employees = () => {
     }
   };
 
-  const handleSearch = (query) => {
-    setSearchQuery(query);
+  const handleSearch = (e) => {
+    const { value } = e.target;
+    setSearchQuery(value);
   };
 
   useEffect(() => {
@@ -239,7 +195,7 @@ const Employees = () => {
         <Search
           placeholder="Search employees..."
           allowClear
-          onSearch={handleSearch}
+          onChange={handleSearch}
           style={{ width: 200 }}
         />
         {/* add a dialog box here with email field and add and cancel buttons  */}
@@ -249,6 +205,13 @@ const Employees = () => {
         >
           <AddIcon className="  inline text-inherit" />
           New
+        </button>
+        <button
+          className="bg-primary-button font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white "
+          onClick={handleNewTeamButton}
+        >
+          <AddIcon className="inline text-inherit" />
+          New Team
         </button>
       </div>
 
@@ -263,19 +226,39 @@ const Employees = () => {
               className="border border-black rounded-lg my-2"
               actions={[
                 // eslint-disable-next-line react/jsx-key
-                <button
-                  className="btn btn-secondary"
-                  onClick={() => handleEdit(user)}
-                >
-                  Edit
-                </button>,
+                <Tooltip title="Edit">
+                  {/* <button
+                    className="btn btn-secondary py-2 rounded-md text-lg text-text-color inline-flex items-center justify-center text-white"
+                    onClick={() => handleEdit(user)}
+                  > */}
+                  <EditOutlined
+                    className="button"
+                    onClick={() => handleEdit(user)}
+                  />
+                  {/* </button> */}
+                </Tooltip>,
                 // eslint-disable-next-line react/jsx-key
-                <button
-                  className="btn btn-danger"
-                  onClick={() => deleteEmployee(user)}
-                >
-                  Delete
-                </button>,
+                <Tooltip title="Add to a Team">
+                  {/* <button className="btn btn-success py-2 rounded-md text-lg text-text-color inline-flex items-center justify-center text-white"> */}
+                  <UsergroupAddOutlined
+                    className="button"
+                    onClick={() => handleTeam()}
+                  />
+                  {/* </button> */}
+                </Tooltip>,
+                // eslint-disable-next-line react/jsx-key
+                <Tooltip title="Delete">
+                  {/* <button
+                    className="btn btn-danger py-2 rounded-md text-lg text-text-color inline-flex items-center justify-center text-white"
+                    onClick={() => deleteEmployee(user)}
+                  > */}
+                  <UserDeleteOutlined
+                    className="button"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => deleteEmployee(user)}
+                  />
+                  {/* </button> */}
+                </Tooltip>,
               ]}
             >
               <List.Item.Meta
@@ -307,6 +290,13 @@ const Employees = () => {
         initialValues={selectedRow}
         onFinish={handleFinish}
       />
+      <Teams visible={teamModalVisible} handleTeam={handleTeam}></Teams>
+      <NewTeam
+        visible={newTeamModalVisible}
+        handleNewTeamButton={handleNewTeamButton}
+        values={users}
+      ></NewTeam>
+      {/* <DeleteUser handleDelete={deleteEmployee} visible={deleteModal} /> */}
     </>
   );
 };
