@@ -3,6 +3,8 @@ const Timesheet = require('../models/timeSheet');
 
 const saveTimeSheet = async(req,res)=>{
     const newTimesheet = Timesheet({
+        employee_name:req.body.employee_name,
+        employee_email:req.body.employee_email,
         project_name:req.body.project_name,
         activity:req.body.activity,
         date:req.body.date,
@@ -63,6 +65,8 @@ const updateTimesheet = async(req,res)=>{
     };
     try {
         const result=await Timesheet.findOneAndUpdate(filter,{
+            employee_name:req.body.employee_name,
+            employee_email:req.body.employee_email,
             project_name:req.body.project_name,
             activity:req.body.activity,
             date:req.body.date,
