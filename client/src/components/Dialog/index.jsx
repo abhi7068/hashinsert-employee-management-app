@@ -28,7 +28,7 @@ const validationSchema = Yup.object().shape({
     .matches(/^\d{10}$/, "Phone number must be 10 digits"),
   hireDate: Yup.date().nullable().required("Hire date is required"),
   salary: Yup.number().required("Salary is required"),
-  email: Yup.string()
+  email: Yup.string()   
     .email("Invalid email address")
     .required("Email is required"),
   role: Yup.string().required("Role is required"),
