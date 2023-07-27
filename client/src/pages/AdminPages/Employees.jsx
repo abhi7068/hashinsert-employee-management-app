@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Avatar, List, Skeleton, message, Tooltip } from "antd";
 import axios from "axios";
-import AddIcon from "@mui/icons-material/Add";
+// import AddIcon from "@mui/icons-material/Add";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import FormDialog from "../../components/Dialog";
@@ -73,6 +73,7 @@ const Employees = () => {
     setEditFormVisible(false);
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleDeleteModal = () => {
     setDeleteModal(!deleteModal);
   };

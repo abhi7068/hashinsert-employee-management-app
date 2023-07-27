@@ -6,9 +6,10 @@ import AlertDialog from "../MuiDialog";
 import EditIcon from "@mui/icons-material/Edit";
 import { Backdrop, CircularProgress } from "@mui/material";
 
+const API_URL = "https://server-sx5c.onrender.com";
 const getAllTimesheets = async () => {
   try {
-    const data = await axios.get("http://localhost:4000/timesheet/getAll");
+    const data = await axios.get(`${API_URL}/timesheet/getAll`);
     return data.data; // Assuming the timesheet data is returned as an array
   } catch (error) {
     console.log(error);
@@ -20,7 +21,7 @@ const updateTimesheet = async ({ timesheet, status }) => {
   console.log(status);
   try {
     const data = await axios.put(
-      `http://localhost:4000/timesheet/update/${timesheet._id}`,
+      `${API_URL}/timesheet/update/${timesheet._id}`,
       {
         project_name: timesheet.project_name,
         status: status,
