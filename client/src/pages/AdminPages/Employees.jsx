@@ -27,6 +27,7 @@ const EditForm = ({ visible, onCancel, initialValues, onFinish }) => {
   const [form] = Form.useForm();
   const finalUser = useContext(AuthContext);
   const navigate = useNavigate();
+  // eslint-disable-next-line no-unused-vars
   const { Search } = Input;
 
   const handleFinish = () => {
@@ -234,15 +235,9 @@ const Employees = () => {
         severity={snackbar.severity}
       />
       <FormDialog open={open} handleClose={handleClose} />
-      <h2>Employees</h2>
       <div className=" flex flex-row justify-between py-4 mb-4 items-center">
-        <Search
-          placeholder="Search employees..."
-          allowClear
-          onSearch={handleSearch}
-          style={{ width: 200 }}
-        />
         {/* add a dialog box here with email field and add and cancel buttons  */}
+        <h2 className="text-xl font-semibold mb-4">Employees</h2>
         <button
           className="bg-primary-button font-medium px-4 py-2 rounded-md text-lg text-text-color inline-block text-white "
           onClick={handleDialogOpen}
@@ -250,6 +245,15 @@ const Employees = () => {
           <AddIcon className="  inline text-inherit" />
           New
         </button>
+      </div>
+      <div className=" flex flex-row justify-center  mb-4 items-center">
+        <Search
+          placeholder="Search employees..."
+          allowClear
+          onSearch={handleSearch}
+          className=" w-full  "
+          // style={{ width: 200 }}
+        />
       </div>
 
       {isLoading ? (
@@ -290,7 +294,9 @@ const Employees = () => {
                 }
                 title={
                   <p>
-                    <b>{user.employee_name}</b>
+                    <b className=" capitalize overflow-hidden text-clip ">
+                      {user.employee_name}
+                    </b>
                   </p>
                 }
                 description={`Employee ID: ${user.employee_id}, Email: ${user.email}, Hire Date: ${user.hire_date}`}

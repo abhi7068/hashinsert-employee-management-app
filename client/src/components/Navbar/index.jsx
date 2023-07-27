@@ -20,7 +20,7 @@ function Index() {
   // console.log(finalUser);
   const [isOpen, setIsOpen] = React.useState(false);
   const [user, isLoadingUser] = useAuthState(auth);
-  console.log(auth.currentUser);
+  // console.log(auth.currentUser);
   // console.log(`user ${JSON.stringify(user)}`);
   const [loadingUsers, setLoadingUsers] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState(null);
@@ -45,7 +45,7 @@ function Index() {
       const usersCollection = collection(db, "users");
       const usersSnapshot = await getDocs(usersCollection);
       const usersList = usersSnapshot.docs.map((doc) => doc.data());
-      console.log(usersList);
+      // console.log(usersList);
       let filteredUser = usersList.filter((u) => u.email === user?.email);
       if (!filteredUser.length) {
         console.log("User not found");
@@ -56,7 +56,7 @@ function Index() {
         setTimeout(() => setErrorMessage(null), 6000);
       } else {
         finalUser.updateUser(filteredUser[0]);
-        console.log(`role ${filteredUser[0].role}`);
+        // console.log(`role ${filteredUser[0].role}`);
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
