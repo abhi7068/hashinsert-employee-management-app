@@ -138,7 +138,8 @@ const TimeSheets = () => {
             />
             <Button
               type="submit"
-              variant="outlined"
+              variant="contained"
+              // style={{ backgroundColor: "#4919f5", color: "white" }}
               disabled={!isDirty || !isValid || isSubmitting}
             >
               Submit

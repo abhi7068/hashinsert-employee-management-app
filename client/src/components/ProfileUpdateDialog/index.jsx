@@ -119,11 +119,14 @@ export default function ProfileUpdateDialog({
             <Button
               type="submit"
               variant="contained"
+              // style={{ backgroundColor: "#4919f5", color: "white" }}
               disabled={!isDirty || !isValid || isSubmitting}
             >
               Save
             </Button>
-            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleClose} className=" text-primary-button">
+              Cancel
+            </Button>
           </form>
         </DialogContent>
         <DialogActions></DialogActions>
