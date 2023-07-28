@@ -210,7 +210,9 @@ const Employees = () => {
           placeholder="Search employees..."
           allowClear
           onChange={handleSearch}
-          style={{ width: "450px" }}
+          style={{
+            width: "50%",
+          }}
         />
         {/* add a dialog box here with email field and add and cancel buttons  */}
         <Tooltip title="Add to a Team">
