@@ -15,22 +15,17 @@ import { useMutation, useQueryClient } from "react-query";
 import { message } from "antd";
 
 const updateProfile = async ({ id, obj }) => {
-  console.log(id);
-  console.log(obj);
   try {
     const response = await axios.put(
       `https://server-sx5c.onrender.com/employee/update/${id}`,
       obj
     );
-    // console.log(response.data);
     if (response.data.success) {
-      message.success(
-        `${response.data.employee.employee_name}'s data Updated succesfully`
-      );
+      message.success(`Your data Updated successfully`);
+      return response.data;
     } else {
       message.error(`Oops! Something went wrong.`);
     }
-    return response.data;
   } catch (error) {
     console.log(error);
     throw new Error("Failed to update profile");
@@ -81,10 +76,14 @@ export default function ProfileUpdateDialog({
 
   const onSubmit = (obj) => {
     // eslint-disable-next-line react/prop-types
-    mutation.mutate({ id: data._id, obj });
-    console.log(data);
-    handleClose();
-    reset();
+    try {
+      mutation.mutate({ id: data._id, obj });
+      handleClose();
+      reset();
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to submit profile");
+    }
   };
 
   const onError = (errors) => {

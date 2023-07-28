@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { auth } from "../../../config/firebase";
 import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
+import { message } from "antd";
 
 const Schema = yup.object().shape({
   project_name: yup.string().required("Please enter a Project Name."),
@@ -39,8 +40,12 @@ const sendTimeSheet = async (data) => {
       email: auth.currentUser.email,
       name: auth.currentUser.displayName,
     });
-    console.log(response.data);
-    return response.data;
+    if (response.data.success) {
+      message.success(`Your timesheet is Submitted successfully`);
+      return response.data;
+    } else {
+      message.error(`Oops! Something went wrong`);
+    }
   } catch (error) {
     console.log(error);
     throw new Error("Failed to submit timesheet");
@@ -77,9 +82,6 @@ const TimeSheets = () => {
   };
 
   const onError = (errors, e) => console.log(errors, e);
-
-  console.log(auth.currentUser.email);
-  console.log(auth.currentUser.displayName);
 
   useEffect(() => {
     if (isSubmitSuccessful) {
