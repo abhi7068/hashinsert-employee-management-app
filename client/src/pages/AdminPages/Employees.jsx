@@ -73,10 +73,10 @@ const Employees = () => {
     setEditFormVisible(false);
   };
 
-  // eslint-disable-next-line no-unused-vars
-  const handleDeleteModal = () => {
-    setDeleteModal(!deleteModal);
-  };
+  // // eslint-disable-next-line no-unused-vars
+  // const handleDeleteModal = () => {
+  //   setDeleteModal(!deleteModal);
+  // };
 
   const handleFinish = (values) => {
     try {
@@ -112,6 +112,7 @@ const Employees = () => {
           user.employee_id.toString().includes(searchQuery)
       );
       setUsers(filteredUsers);
+      console.log(filteredUsers);
       setIsLoading(false);
     } catch (error) {
       console.log("error in getting all employees", error);
@@ -127,9 +128,11 @@ const Employees = () => {
         user
       );
       if (response.data.success) {
-        message.success("Data Successfully Updated");
+        message.success(
+          `${response.data.data.employee_name}'s data is Updated successfully`
+        );
       } else {
-        message.error(response.data.msg);
+        message.error(`Oops! Something went wrong.`);
       }
       setIsLoading(false);
     } catch (error) {
@@ -158,8 +161,7 @@ const Employees = () => {
           querySnapshot.forEach((doc) => {
             deleteDoc(doc.ref);
           });
-
-          message.success(response.data.msg);
+          message.success(`${user.employee_name} is Deleted successfully`);
         } else {
           message.error(response.data.msg);
         }

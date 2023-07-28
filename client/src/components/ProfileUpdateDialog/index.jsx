@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useMutation, useQueryClient } from "react-query";
+import { message } from "antd";
 
 const updateProfile = async ({ id, obj }) => {
   console.log(id);
@@ -21,7 +22,14 @@ const updateProfile = async ({ id, obj }) => {
       `https://server-sx5c.onrender.com/employee/update/${id}`,
       obj
     );
-    console.log(response.data);
+    // console.log(response.data);
+    if (response.data.success) {
+      message.success(
+        `${response.data.employee.employee_name}'s data Updated succesfully`
+      );
+    } else {
+      message.error(`Oops! Something went wrong.`);
+    }
     return response.data;
   } catch (error) {
     console.log(error);
