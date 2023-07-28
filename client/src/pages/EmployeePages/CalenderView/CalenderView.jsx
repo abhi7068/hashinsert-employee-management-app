@@ -11,7 +11,11 @@ const EmpCalenderView = () => {
       navigate("/");
     }
   }, [finalUser?.user?.email]);
-  return <div>this is calender view pages</div>;
+  return (
+    <div className=" text-2xl font-bold text-primary-button">
+      This is calender view page
+    </div>
+  );
 };
 
 export default EmpCalenderView;

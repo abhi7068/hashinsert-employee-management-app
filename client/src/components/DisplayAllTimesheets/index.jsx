@@ -88,7 +88,9 @@ const Index = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-semibold mb-6">Time Sheets</h1>
+      <h1 className="text-xl font-bold text-primary-button mb-6">
+        Time Sheets
+      </h1>
       {data?.Timesheet?.map((timesheet) => {
         const isOpen = openStates[timesheet._id] || false; // Retrieve the open state for this timesheet
 
