@@ -8,8 +8,8 @@ import LeaveRequest from "./pages/AdminPages/LeaveRequest";
 import Error from "./pages/Errorpage/Error";
 import EmpCalenderView from "./pages/EmployeePages/CalenderView/CalenderView";
 import EmpTimeSheets from "./pages/EmployeePages/TimeSheets/TimeSheets";
-import EmpleaveRequests from "./pages/EmployeePages/leaveRequests/leaveRequests";
 import Profile from "./pages/EmployeePages/Profile/Profile";
+import EmployeeLeaveRequest from "./pages/EmployeePages/leaveRequests/leaveRequests";
 // import CalenderPage from "./pages/AdminPages/CalenderPage";
 import TimesheetDetail from "./components/TimesheetDetailPage/index";
 
@@ -32,7 +32,7 @@ function App() {
           <Route path="/employee/calenderview" element={<EmpCalenderView />} />
           <Route
             path="/employee/leaverequests"
-            element={<EmpleaveRequests />}
+            element={<EmployeeLeaveRequest />}
           />
           <Route path="*" element={<Error />} />
         </Routes>
