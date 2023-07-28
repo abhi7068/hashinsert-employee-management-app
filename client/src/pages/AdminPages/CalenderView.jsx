@@ -13,7 +13,9 @@ const CalenderView = () => {
       navigate("/");
     }
   }, [finalUser?.user?.email]);
-  return <div className=" text-xl font-bold">CalenderView</div>;
+  return (
+    <div className=" text-xl font-bold text-primary-button">CalenderView</div>
+  );
 };
 
 export default CalenderView;

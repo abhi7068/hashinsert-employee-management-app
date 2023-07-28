@@ -194,7 +194,7 @@ const Employees = () => {
       />
       <FormDialog open={open} handleClose={handleClose} />
       <div className=" flex justify-between items-start ">
-        <h2 className=" text-xl font-bold">Employees</h2>
+        <h2 className=" text-xl font-bold text-primary-button">Employees</h2>
         <Tooltip title="Add New Employee">
           <button
             className="bg-primary-button font-medium px-4 py-2 rounded-full text-lg text-text-color inline-block text-white "
