@@ -7,6 +7,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import AlertDialog from "../MuiDialog";
 import EditIcon from "@mui/icons-material/Edit";
 import { Backdrop, CircularProgress } from "@mui/material";
+import { Button, Tooltip, message } from "antd";
 
 const API_URL = "https://server-sx5c.onrender.com";
 const getAllTimesheets = async () => {
@@ -20,7 +21,6 @@ const getAllTimesheets = async () => {
 };
 
 const updateTimesheet = async ({ timesheet, status }) => {
-  console.log(status);
   try {
     const data = await axios.put(
       `${API_URL}/timesheet/update/${timesheet._id}`,
@@ -32,8 +32,11 @@ const updateTimesheet = async ({ timesheet, status }) => {
         duration: timesheet.duration,
       }
     );
-    console.log(data.data);
-    console.log(data.data.success);
+    if (data.data.success) {
+      message.success(`${timesheet.name}'s TimeSheet is ${status} succesfully`);
+    } else {
+      message.error(`Oops!, something went wrong.`);
+    }
     return data.data;
   } catch (error) {
     console.log(error);
@@ -174,6 +177,7 @@ const Index = () => {
                   {timesheet.activity}
                 </p>
               </div>
+              {/* make this edit into button and place at the right bottom corner */}
               <div
                 className="cursor-pointer flex justify-center items-center"
                 onClick={() => handleOpen(timesheet._id)}
