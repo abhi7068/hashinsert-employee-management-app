@@ -63,7 +63,9 @@ const LeaveRequest = () => {
 
   return (
     <>
-      <h2 className=" text-xl font-semibold mb-4">Leave Requests</h2>
+      <h2 className=" text-xl font-semibold mb-4 text-primary-button">
+        Leave Requests
+      </h2>
       <List
         className="demo-loadmore-list"
         itemLayout="horizontal"

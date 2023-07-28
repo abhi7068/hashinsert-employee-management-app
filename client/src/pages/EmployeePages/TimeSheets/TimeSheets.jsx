@@ -1,16 +1,207 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../../context/AuthContext";
-const EmpTimeSheets = () => {
-  const navigate = useNavigate();
-  const finalUser = React.useContext(AuthContext);
+import { Button, TextField, InputLabel } from "@mui/material";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useEffect } from "react";
+import { auth } from "../../../config/firebase";
+import { useMutation, useQueryClient } from "react-query";
+import axios from "axios";
 
-  React.useEffect(() => {
-    if (!finalUser?.user?.email) {
-      navigate("/");
-    }
-  }, [finalUser?.user?.email]);
-  return <div>This is timesheets pages</div>;
+const Schema = yup.object().shape({
+  project_name: yup.string().required("Please enter a Project Name."),
+  activity: yup.string().required("Please enter an Activity."),
+  date: yup
+    .date("Must be a Date type")
+    .required("Please select a Date.")
+    .test(
+      "valid-date",
+      "Invalid Date. Please enter a valid date.",
+      (value) => value instanceof Date && !isNaN(value)
+    ),
+  duration: yup
+    .number()
+    .required("Please enter the Duration.")
+    .min(1, "Duration must be at least 1.")
+    .max(24, "Duration cannot be more than 24."),
+});
+
+const API_URL = "http://localhost:4000";
+const sendTimeSheet = async (data) => {
+  try {
+    data.date = data.date.toISOString().slice(0, 10); // Convert date to ISO format
+    data.duration = data.duration.toString() + "hrs"; // Convert duration to string
+    const response = await axios.post(`${API_URL}/timesheet/save`, {
+      project_name: data.project_name,
+      activity: data.activity,
+      date: data.date,
+      duration: data.duration,
+      status: "pending",
+      email: auth.currentUser.email,
+      name: auth.currentUser.displayName,
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to submit timesheet");
+  }
 };
 
-export default EmpTimeSheets;
+const TimeSheets = () => {
+  const { register, handleSubmit, formState, reset } = useForm({
+    defaultValues: {
+      project_name: "",
+      activity: "",
+      date: new Date(),
+      duration: 0,
+    },
+    mode: "onTouched",
+    resolver: yupResolver(Schema),
+  });
+
+  const { isSubmitSuccessful, isDirty, isValid, isSubmitting } = formState;
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation(sendTimeSheet, {
+    onSuccess: () => {
+      return queryClient.invalidateQueries("timesheets");
+    },
+  });
+
+  const onSubmit = (data) => {
+    try {
+      mutation.mutate(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onError = (errors, e) => console.log(errors, e);
+
+  console.log(auth.currentUser.email);
+  console.log(auth.currentUser.displayName);
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful]);
+
+  return (
+    <>
+      <h1 className="mb-6 text-2xl font-bold text-primary-button">
+        Submit TimeSheets
+      </h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+        {/* SVG section */}
+        <div className="w-full md:order-2">
+          <img src="/time.svg" alt="time" className="w-full items-center" />
+        </div>
+
+        {/* Form section */}
+        <div className="w-full md:order-1 mt-6">
+          <form
+            onSubmit={handleSubmit(onSubmit, onError)}
+            className="flex flex-col gap-4"
+          >
+            <TextField
+              type="text"
+              label="Project Name"
+              {...register("project_name")}
+              error={!!formState.errors.project_name}
+              helperText={formState.errors.project_name?.message}
+            />
+            <TextField
+              type="text"
+              label="Activity"
+              {...register("activity")}
+              error={!!formState.errors.activity}
+              helperText={formState.errors.activity?.message}
+            />
+            <InputLabel htmlFor="date" className=" m-0"></InputLabel>
+            <TextField
+              type="date"
+              id="date"
+              label="Date"
+              {...register("date")}
+              defaultValue={new Date().toISOString().slice(0, 10)} // Set default value to today's date
+              error={!!formState.errors.date}
+              helperText={formState.errors.date?.message}
+              InputLabelProps={{ shrink: true }} // Ensure the label is not floating on top of the input
+            />
+            <TextField
+              type="number"
+              label="Number of Hours worked?"
+              error={!!formState.errors.duration}
+              helperText={formState.errors.duration?.message}
+              {...register("duration")}
+            />
+            <Button
+              type="submit"
+              variant="outlined"
+              disabled={!isDirty || !isValid || isSubmitting}
+            >
+              Submit
+            </Button>
+            {/* ... rest of the form content */}
+          </form>
+        </div>
+      </div>
+    </>
+  );
+
+  // return (
+  //   <>
+  //     <h1 className=" mb-4 text-xl font-semibold">Submit TimeSheets</h1>
+  //     <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
+  //       <div>
+  //         <form
+  //           onSubmit={handleSubmit(onSubmit, onError)}
+  //           className=" flex flex-col gap-4 order-2 md:order-1 "
+  //         >
+  //           <TextField
+  //             type="text"
+  //             label="Project Name"
+  //             {...register("project_name")}
+  //             error={!!formState.errors.project_name}
+  //             helperText={formState.errors.project_name?.message}
+  //           />
+  //           <TextField
+  //             type="text"
+  //             label="Activity"
+  //             {...register("activity")}
+  //             error={!!formState.errors.activity}
+  //             helperText={formState.errors.activity?.message}
+  //           />
+  //           <TextField
+  //             type="date"
+  //             label="Date"
+  //             {...register("date")}
+  //             error={!!formState.errors.date}
+  //             helperText={formState.errors.date?.message}
+  //           />
+  //           <TextField
+  //             type="number"
+  //             label="Number of Hours worked?"
+  //             error={!!formState.errors.duration}
+  //             helperText={formState.errors.duration?.message}
+  //             {...register("duration")}
+  //           />
+  //           <Button
+  //             type="submit"
+  //             variant="outlined"
+  //             disabled={!isDirty || !isValid || isSubmitting}
+  //           >
+  //             Submit
+  //           </Button>
+  //         </form>
+  //       </div>
+  //       <div className=" w-full items-center order-1 md:order-2">
+  //         <img src="/time.svg" alt="time" className=" w-full items-center" />
+  //       </div>
+  //     </div>
+  //   </>
+  // );
+};
+
+export default TimeSheets;
