@@ -45,13 +45,6 @@ export const EditForm = ({ visible, onCancel, initialValues, onFinish }) => {
     >
       <Form form={form} initialValues={initialValues} onFinish={handleFinish}>
         <Form.Item
-          name="employee_id"
-          label="ID"
-          rules={[{ required: true, message: "Please enter ID" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
           name="employee_name"
           label="Name"
           rules={[{ required: true, message: "Please enter Name" }]}
@@ -59,18 +52,25 @@ export const EditForm = ({ visible, onCancel, initialValues, onFinish }) => {
           <Input />
         </Form.Item>
         <Form.Item
-          name="email"
-          label="Email"
-          rules={[{ required: true, message: "Please enter Department ID" }]}
+          name="phone_number"
+          label="Phone"
+          rules={[{ required: true, message: "Please enter ID" }]}
         >
-          <Input disabled />
+          <Input />
         </Form.Item>
         <Form.Item
-          name="hire_date"
-          label="Hire Date"
+          name="role"
+          label="Role"
           rules={[{ required: true, message: "Please enter Hire Date" }]}
         >
           <Input />
+        </Form.Item>
+        <Form.Item
+          name="salary"
+          label="Salary"
+          rules={[{ required: true, message: "Please enter Department ID" }]}
+        >
+          <Input disabled />
         </Form.Item>
       </Form>
     </Modal>

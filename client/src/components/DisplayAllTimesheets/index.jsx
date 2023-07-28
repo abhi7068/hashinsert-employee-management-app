@@ -6,7 +6,8 @@ import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import EmailIcon from "@mui/icons-material/Email";
 import AlertDialog from "../MuiDialog";
 import EditIcon from "@mui/icons-material/Edit";
-import { Backdrop, CircularProgress } from "@mui/material";
+import { Backdrop, CircularProgress, Button } from "@mui/material";
+import { Tooltip, message } from "antd";
 
 const API_URL = "https://server-sx5c.onrender.com";
 const getAllTimesheets = async () => {
@@ -20,7 +21,6 @@ const getAllTimesheets = async () => {
 };
 
 const updateTimesheet = async ({ timesheet, status }) => {
-  console.log(status);
   try {
     const data = await axios.put(
       `${API_URL}/timesheet/update/${timesheet._id}`,
@@ -32,8 +32,11 @@ const updateTimesheet = async ({ timesheet, status }) => {
         duration: timesheet.duration,
       }
     );
-    console.log(data.data);
-    console.log(data.data.success);
+    if (data.data.success) {
+      message.success(`${timesheet.name}'s TimeSheet is ${status} succesfully`);
+    } else {
+      message.error(`Oops!, something went wrong.`);
+    }
     return data.data;
   } catch (error) {
     console.log(error);
@@ -144,45 +147,63 @@ const Index = () => {
               </p>
             </div>
             <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-start">
-              <div className="flex justify-center items-center">
-                <EmailIcon className="mr-2" />
-                <p className="text-sm font-semibold text-clip overflow-hidden line-clamp-1">
-                  {timesheet.email}
-                </p>
-              </div>
-              <div className="flex justify-center items-center">
-                <AccountTreeIcon className="mr-2" />
-                <p className="text-sm font-semibold text-clip overflow-hidden line-clamp-1">
-                  {timesheet.project_name}
-                </p>
-              </div>
-              <div className="flex justify-center items-center">
-                <DateRange className="mr-2" />
-                <p className="text-sm font-semibold text-clip overflow-hidden line-clamp-1">
-                  {timesheet.date}
-                </p>
-              </div>
-              <div className="flex justify-center items-center">
-                <AvTimer className="mr-2" />
-                <p className="text-sm font-semibold text-clip overflow-hidden line-clamp-1">
-                  {timesheet.duration}
-                </p>
-              </div>
-              <div className="flex justify-center items-center">
-                <Task className="mr-2" />
-                <p className="text-sm font-semibold text-clip overflow-hidden capitalize line-clamp-1">
-                  {timesheet.activity}
-                </p>
-              </div>
-              <div
-                className="cursor-pointer flex justify-center items-center"
-                onClick={() => handleOpen(timesheet._id)}
+              <Tooltip title="Email">
+                <div className="flex justify-center items-center">
+                  <EmailIcon className="mr-2" />
+                  <p className="text-sm font-semibold text-clip overflow-hidden line-clamp-1">
+                    {timesheet.email}
+                  </p>
+                </div>
+              </Tooltip>
+              <Tooltip title="Project">
+                <div className="flex justify-center items-center">
+                  <AccountTreeIcon className="mr-2" />
+                  <p className="text-sm font-semibold text-clip overflow-hidden line-clamp-1">
+                    {timesheet.project_name}
+                  </p>
+                </div>
+              </Tooltip>
+              <Tooltip title="Date">
+                <div className="flex justify-center items-center">
+                  <DateRange className="mr-2" />
+                  <p className="text-sm font-semibold text-clip overflow-hidden line-clamp-1">
+                    {timesheet.date}
+                  </p>
+                </div>
+              </Tooltip>
+              <Tooltip title="Duration">
+                <div className="flex justify-center items-center">
+                  <AvTimer className="mr-2" />
+                  <p className="text-sm font-semibold text-clip overflow-hidden line-clamp-1">
+                    {timesheet.duration}
+                  </p>
+                </div>
+              </Tooltip>
+              <Tooltip title="Activity">
+                <div className="flex justify-center items-center">
+                  <Task className="mr-2" />
+                  <p className="text-sm font-semibold text-clip overflow-hidden capitalize line-clamp-1">
+                    {timesheet.activity}
+                  </p>
+                </div>
+              </Tooltip>
+              {/* make this edit into button and place at the right bottom corner */}
+              <Button
+                variant="contained"
+                style={{ backgroundColor: "#4919f5" }}
               >
-                <EditIcon className=" mr-2" />
-                <p className="text-sm font-semibold text-clip overflow-hidden capitalize line-clamp-1">
-                  Edit
-                </p>
-              </div>
+                <Tooltip title="Edit">
+                  <div
+                    className="cursor-pointer flex justify-center items-center"
+                    onClick={() => handleOpen(timesheet._id)}
+                  >
+                    <EditIcon className=" mr-2" />
+                    <p className="text-sm font-semibold text-clip overflow-hidden capitalize line-clamp-1">
+                      Edit
+                    </p>
+                  </div>
+                </Tooltip>
+              </Button>
             </div>
           </div>
         );
