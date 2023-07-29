@@ -12,6 +12,9 @@ import Profile from "./pages/EmployeePages/Profile/Profile";
 import EmployeeLeaveRequest from "./pages/EmployeePages/leaveRequests/leaveRequests";
 // import CalenderPage from "./pages/AdminPages/CalenderPage";
 import TimesheetDetail from "./components/TimesheetDetailPage/index";
+import LeaveRequestsDetailPage from "./pages/EmployeePages/leaveRequests/LeaveRequestsDetailPage";
+
+import TimeSheetsTabs from "./pages/EmployeePages/TimeSheets/TimeSheetDetailPage";
 
 function App() {
   return (
@@ -29,10 +32,18 @@ function App() {
           {/* change below pages to employee pages  */}
           <Route path="/employee/profile" element={<Profile />} />
           <Route path="/employee/timesheets" element={<EmpTimeSheets />} />
+          <Route
+            path="/employee/timesheetsdetails"
+            element={<TimeSheetsTabs />}
+          />
           <Route path="/employee/calenderview" element={<EmpCalenderView />} />
           <Route
             path="/employee/leaverequests"
             element={<EmployeeLeaveRequest />}
+          />
+          <Route
+            path="/employee/leaverequestsdetails"
+            element={<LeaveRequestsDetailPage />}
           />
           <Route path="*" element={<Error />} />
         </Routes>
