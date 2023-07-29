@@ -43,7 +43,7 @@ const sendTimeSheet = async (data) => {
       name: auth.currentUser.displayName,
     });
     if (response.data.success) {
-      message.success(`Your timesheet is Submitted successfully`);
+      message.success(`Your Timesheet is Submitted successfully`);
       return response.data;
     } else {
       message.error(`Oops! Something went wrong`);

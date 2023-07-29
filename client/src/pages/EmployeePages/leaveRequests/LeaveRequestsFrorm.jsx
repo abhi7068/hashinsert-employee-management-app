@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { auth } from "../../../config/firebase";
 import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
+import { message } from "antd";
 
 const Schema = yup.object().shape({
   start_date: yup
@@ -39,7 +40,12 @@ const sendLeaveRequest = async (data) => {
       data
     );
     console.log(res.data);
-    return res.data;
+    if (res.data.success) {
+      message.success(`Submitted Successfully`);
+      return res.data;
+    } else {
+      message.error(`Oops! Something went wrong`);
+    }
   } catch (error) {
     console.log(error);
   }

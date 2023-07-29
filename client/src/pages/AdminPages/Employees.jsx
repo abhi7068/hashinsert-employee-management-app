@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Avatar, List, Skeleton, message, Tooltip } from "antd";
 import axios from "axios";
-// import AddIcon from "@mui/icons-material/Add";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import FormDialog from "../../components/Dialog";
@@ -43,7 +42,7 @@ const Employees = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [teamModalVisible, setTeamModalVisible] = useState(false);
   const [newTeamModalVisible, setNewTeamModalVisible] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false);
+  // const [deleteModal, setDeleteModal] = useState(false);
   const { render } = useContext(RerenderContext);
   const API_URL = "https://server-sx5c.onrender.com";
 
@@ -202,8 +201,6 @@ const Employees = () => {
             className="bg-primary-button font-medium px-4 py-2 rounded-full text-lg text-text-color inline-block text-white "
             onClick={handleDialogOpen}
           >
-            {/* <AddIcon className="  inline text-inherit" />
-          New */}
             <PersonAddAlt1Icon />
           </button>
         </Tooltip>
@@ -213,7 +210,9 @@ const Employees = () => {
           placeholder="Search employees..."
           allowClear
           onChange={handleSearch}
-          style={{ width: 200 }}
+          style={{
+            width: "50%",
+          }}
         />
         {/* add a dialog box here with email field and add and cancel buttons  */}
         <Tooltip title="Add to a Team">
@@ -221,8 +220,6 @@ const Employees = () => {
             className="bg-primary-button font-medium px-4 py-2 rounded-full text-lg text-text-color inline-block text-white "
             onClick={handleNewTeamButton}
           >
-            {/* <AddIcon className="inline text-inherit" />
-          New Team */}
             <GroupAddIcon />
           </button>
         </Tooltip>
@@ -240,43 +237,32 @@ const Employees = () => {
               actions={[
                 // eslint-disable-next-line react/jsx-key
                 <Tooltip title="Edit">
-                  {/* <button
-                    className="btn btn-secondary py-2 rounded-md text-lg text-text-color inline-flex items-center justify-center text-white"
-                    onClick={() => handleEdit(user)}
-                  > */}
                   <EditOutlined
                     className="button"
                     onClick={() => handleEdit(user)}
                   />
-                  {/* </button> */}
                 </Tooltip>,
                 // eslint-disable-next-line react/jsx-key
                 <Tooltip title="Add to a Team">
-                  {/* <button className="btn btn-success py-2 rounded-md text-lg text-text-color inline-flex items-center justify-center text-white"> */}
                   <UsergroupAddOutlined
                     className="button"
                     onClick={() => handleTeam()}
                   />
-                  {/* </button> */}
                 </Tooltip>,
                 // eslint-disable-next-line react/jsx-key
                 <Tooltip title="Delete">
-                  {/* <button
-                    className="btn btn-danger py-2 rounded-md text-lg text-text-color inline-flex items-center justify-center text-white"
-                    onClick={() => deleteEmployee(user)}
-                  > */}
                   <UserDeleteOutlined
                     className="button"
                     style={{ cursor: "pointer" }}
                     onClick={() => deleteEmployee(user)}
                   />
-                  {/* </button> */}
                 </Tooltip>,
               ]}
             >
               <List.Item.Meta
                 avatar={
                   <Avatar
+                    className="mx-2"
                     src={
                       user?.gender == "female"
                         ? "/FemaleAvatar.svg"
