@@ -2,6 +2,7 @@ import EmployeeProfile from "../../../components/EmployeeProfile/index";
 import { useQuery } from "react-query";
 import { auth } from "../../../config/firebase";
 import axios from "axios";
+import Loader from "../../../Loader.jsx";
 
 const getProfileDetails = async () => {
   try {
@@ -21,7 +22,7 @@ const Profile = () => {
   );
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loader isLoading={isLoading} />;
   }
 
   if (isError) {

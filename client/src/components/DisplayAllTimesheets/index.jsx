@@ -6,8 +6,9 @@ import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import EmailIcon from "@mui/icons-material/Email";
 import AlertDialog from "../MuiDialog";
 import EditIcon from "@mui/icons-material/Edit";
-import { Backdrop, CircularProgress, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import { Tooltip, message } from "antd";
+import Loader from "../../Loader";
 
 const API_URL = "https://server-sx5c.onrender.com";
 const getAllTimesheets = async () => {
@@ -65,15 +66,20 @@ const Index = () => {
     },
   });
 
+  const filterData = data?.Timesheet?.filter(
+    (timesheet) => timesheet.status === "pending"
+  );
+
   if (isLoading) {
     return (
       <>
-        <Backdrop
+        {/* <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={isLoading}
         >
           <CircularProgress color="inherit" />
-        </Backdrop>
+        </Backdrop> */}
+        <Loader isLoading={isLoading} />
       </>
     );
   }
@@ -97,7 +103,7 @@ const Index = () => {
       <h1 className="text-xl font-bold text-primary-button mb-6">
         Time Sheets
       </h1>
-      {data?.Timesheet?.map((timesheet) => {
+      {filterData?.map((timesheet) => {
         const isOpen = openStates[timesheet._id] || false; // Retrieve the open state for this timesheet
 
         return (
@@ -128,12 +134,7 @@ const Index = () => {
                 </>
               }
             />
-
-            <div className="flex justify-between mb-4 truncate">
-              <h1 className="text-clip overflow-hidden line-clamp-1  text-xl font-semibold capitalize">
-                {timesheet?.name}
-              </h1>
-
+            <div className=" flex justify-end">
               <p
                 className={`border px-2 py-1 text-white font-semibold text-sm rounded-xl lowercase ${
                   timesheet.status === "pending"
@@ -146,17 +147,23 @@ const Index = () => {
                 {timesheet.status}
               </p>
             </div>
+
+            <div className="flex justify-start flex-wrap mb-4 truncate">
+              <h1 className="text-clip overflow-hidden line-clamp-1  text-xl font-semibold capitalize flex flex-wrap">
+                {timesheet?.name}
+              </h1>
+            </div>
             <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-start">
               <Tooltip title="Email">
-                <div className="flex justify-center items-center">
+                <div className="flex justify-center items-center flex-wrap text-clip overflow-hidden">
                   <EmailIcon className="mr-2" />
-                  <p className="text-sm font-semibold text-clip overflow-hidden line-clamp-1">
+                  <p className="text-sm font-semibold text-clip overflow-hidden ">
                     {timesheet.email}
                   </p>
                 </div>
               </Tooltip>
               <Tooltip title="Project">
-                <div className="flex justify-center items-center">
+                <div className="flex justify-center items-center flex-wrap">
                   <AccountTreeIcon className="mr-2" />
                   <p className="text-sm font-semibold text-clip overflow-hidden line-clamp-1">
                     {timesheet.project_name}
@@ -164,7 +171,7 @@ const Index = () => {
                 </div>
               </Tooltip>
               <Tooltip title="Date">
-                <div className="flex justify-center items-center">
+                <div className="flex justify-center items-center flex-wrap">
                   <DateRange className="mr-2" />
                   <p className="text-sm font-semibold text-clip overflow-hidden line-clamp-1">
                     {timesheet.date}
@@ -172,7 +179,7 @@ const Index = () => {
                 </div>
               </Tooltip>
               <Tooltip title="Duration">
-                <div className="flex justify-center items-center">
+                <div className="flex justify-center items-center flex-wrap">
                   <AvTimer className="mr-2" />
                   <p className="text-sm font-semibold text-clip overflow-hidden line-clamp-1">
                     {timesheet.duration}
@@ -180,7 +187,7 @@ const Index = () => {
                 </div>
               </Tooltip>
               <Tooltip title="Activity">
-                <div className="flex justify-center items-center">
+                <div className="flex justify-center items-center flex-wrap">
                   <Task className="mr-2" />
                   <p className="text-sm font-semibold text-clip overflow-hidden capitalize line-clamp-1">
                     {timesheet.activity}
