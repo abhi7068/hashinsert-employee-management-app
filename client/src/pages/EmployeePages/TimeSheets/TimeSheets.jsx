@@ -7,6 +7,8 @@ import { auth } from "../../../config/firebase";
 import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 import { message } from "antd";
+import EastIcon from "@mui/icons-material/East";
+import { Link } from "react-router-dom";
 
 const Schema = yup.object().shape({
   project_name: yup.string().required("Please enter a Project Name."),
@@ -26,7 +28,7 @@ const Schema = yup.object().shape({
     .max(24, "Duration cannot be more than 24."),
 });
 
-const API_URL = "http://localhost:4000";
+const API_URL = "https://server-sx5c.onrender.com";
 const sendTimeSheet = async (data) => {
   try {
     data.date = data.date.toISOString().slice(0, 10); // Convert date to ISO format
@@ -91,9 +93,14 @@ const TimeSheets = () => {
 
   return (
     <>
-      <h1 className="mb-6 text-2xl font-bold text-primary-button">
-        Submit TimeSheets
-      </h1>
+      <div className=" flex justify-between items-center flex-wrap mb-6 text-xl text-primary-button font-bold">
+        <h1>Submit TimeSheets</h1>
+
+        <Link to={"/employee/timesheetsdetails"} className=" cursor-pointer">
+          View All
+          <EastIcon className=" ml-2" />
+        </Link>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
         {/* SVG section */}
         <div className="w-full md:order-2">
