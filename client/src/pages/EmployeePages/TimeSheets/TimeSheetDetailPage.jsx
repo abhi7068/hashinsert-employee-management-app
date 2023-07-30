@@ -16,9 +16,10 @@ import AlertDialog from "../../../components/MuiDialog/index";
 // eslint-disable-next-line no-unused-vars
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Backdrop, CircularProgress, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import { Tooltip, message } from "antd";
 import { auth } from "../../../config/firebase.js";
+import Loader from "../../../Loader";
 
 const API_URL = "https://server-sx5c.onrender.com";
 
@@ -168,12 +169,13 @@ const TimeSheetDetailPage = ({ status }) => {
   if (isLoading) {
     return (
       <>
-        <Backdrop
+        <Loader isLoading={isLoading} />
+        {/* <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={isLoading}
         >
           <CircularProgress color="inherit" />
-        </Backdrop>
+        </Backdrop> */}
       </>
     );
   }

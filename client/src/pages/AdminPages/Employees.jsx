@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Avatar, List, Skeleton, message, Tooltip } from "antd";
+import { Avatar, List, message, Tooltip } from "antd";
 import axios from "axios";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
@@ -30,6 +30,7 @@ import { db } from "../../config/firebase";
 import Search from "antd/es/input/Search";
 
 import "../../App.css";
+import Loader from "../../Loader";
 // import DeleteUser from "../../components/Modals/DeleteUser";
 // eslint-disable-next-line react/prop-types
 
@@ -226,7 +227,7 @@ const Employees = () => {
       </div>
 
       {isLoading ? (
-        <Skeleton />
+        <Loader isLoading={isLoading} />
       ) : (
         <List
           className="demo-loadmore-list"
