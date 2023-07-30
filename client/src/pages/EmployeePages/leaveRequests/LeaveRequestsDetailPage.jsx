@@ -8,8 +8,9 @@ import axios from "axios";
 import { auth } from "../../../config/firebase";
 import { useQuery } from "react-query";
 import { useTable } from "react-table";
+import Loader from "../../../Loader";
 
-const API_URL = "http://localhost:4000";
+const API_URL = "https://server-sx5c.onrender.com";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -50,7 +51,7 @@ function LeaveRequestsDetailPage() {
   );
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader isLoading={isLoading} />;
   }
 
   if (isError) {

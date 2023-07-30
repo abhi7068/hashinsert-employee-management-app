@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import CalenderPage from "./CalenderPage";
 
 const CalenderView = () => {
   const finalUser = React.useContext(AuthContext);
@@ -14,7 +15,12 @@ const CalenderView = () => {
     }
   }, [finalUser?.user?.email]);
   return (
-    <div className=" text-xl font-bold text-primary-button">CalenderView</div>
+    <>
+      <div className=" text-xl font-bold text-primary-button mb-6">
+        CalenderView
+      </div>
+      <CalenderPage />
+    </>
   );
 };
 
