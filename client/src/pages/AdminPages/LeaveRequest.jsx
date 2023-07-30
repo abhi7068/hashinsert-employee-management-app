@@ -38,9 +38,7 @@ const LeaveRequest = () => {
       );
       if (response.data.success) {
         message.success(`${leave.employee_name}'s leave ${leaveStatus}`);
-        axios
-          .delete(`${API_URL}/leaverequest/delete/${leave._id}`)
-          .then(() => getAllLeaves());
+        getAllLeaves();
       } else {
         message.error(response.data.msg);
       }
