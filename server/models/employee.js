@@ -21,9 +21,9 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    gender:{
+    gender: {
       type: String,
-      required :true
+      required: true,
     },
     hire_date: {
       type: String,
@@ -36,6 +36,9 @@ const employeeSchema = new mongoose.Schema(
     role: {
       type: String,
       required: true,
+    },
+    imageURL: {
+      type: String,
     },
   },
   { timeStamps: true }

@@ -5,13 +5,16 @@ import "./index.css";
 import AuthProviderContext from "./context/AuthContext.jsx";
 import SnackbarContextProvider from "./context/SnackbarContext.jsx";
 import ReRender from "./context/ReRender.jsx";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ReRender>
       <AuthProviderContext>
         <SnackbarContextProvider>
-          <App />
+          <QueryClientProvider client={new QueryClient()}>
+            <App />
+          </QueryClientProvider>
         </SnackbarContextProvider>
       </AuthProviderContext>
     </ReRender>

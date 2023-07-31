@@ -1,5 +1,5 @@
 // import Timesheet from '../models/timeSheet';
-const Timesheet = require('../models/timeSheet');
+const Timesheet = require("../models/timeSheet");
 
 const saveTimeSheet = async(req,res)=>{
     const newTimesheet = Timesheet({
@@ -19,30 +19,28 @@ const saveTimeSheet = async(req,res)=>{
         }
 }
 
-const getOneTimesheet = async(req,res)=>{
-    const filter = {_id :req.params.id};
-    const data = await Timesheet.findOne(filter);
-    if(data){
-        // return res.json(data);
-        return res.status(200).send({success:true,Timesheet:data});
-    }
-    else{
-        // return res.json("not available");
-        return res.status(400).send({success:false,msg:"data not found"});
-    }
-}
+const getOneTimesheet = async (req, res) => {
+  const filter = { _id: req.params.id };
+  const data = await Timesheet.findOne(filter);
+  if (data) {
+    // return res.json(data);
+    return res.status(200).send({ success: true, Timesheet: data });
+  } else {
+    // return res.json("not available");
+    return res.status(400).send({ success: false, msg: "data not found" });
+  }
+};
 
-const getAll = async(req,res)=>{
-    const data=await Timesheet.find();
-    if(data){
-        // return res.json(data);
-        return res.status(200).send({success:true,Timesheet:data});
-    }
-    else{
-        // return res.json("not available");
-        return res.status(400).send({success:false,msg:"data not found"});
-    }
-}
+const getAll = async (req, res) => {
+  const data = await Timesheet.find();
+  if (data) {
+    // return res.json(data);
+    return res.status(200).send({ success: true, Timesheet: data });
+  } else {
+    // return res.json("not available");
+    return res.status(400).send({ success: false, msg: "data not found" });
+  }
+};
 
 const getByEmail = async(req,res)=>{
     const filter = {employee_email :req.params.email};

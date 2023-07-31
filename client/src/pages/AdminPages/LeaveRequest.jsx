@@ -38,9 +38,7 @@ const LeaveRequest = () => {
       );
       if (response.data.success) {
         message.success(`${leave.employee_name}'s leave ${leaveStatus}`);
-        axios
-          .delete(`${API_URL}/leaverequest/delete/${leave._id}`)
-          .then(() => getAllLeaves());
+        getAllLeaves();
       } else {
         message.error(response.data.msg);
       }
@@ -52,10 +50,20 @@ const LeaveRequest = () => {
   useEffect(() => {
     getAllLeaves();
   }, []);
+  // Helper function to format date to dd/mm/yyyy
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
 
   return (
     <>
-      <h2>Leave Requests</h2>
+      <h2 className=" text-xl font-semibold mb-4 text-primary-button">
+        Leave Requests
+      </h2>
       <List
         className="demo-loadmore-list"
         itemLayout="horizontal"
@@ -64,6 +72,7 @@ const LeaveRequest = () => {
           <List.Item
             className="border border-black rounded-lg my-2 flex flex-wrap"
             actions={[
+              // eslint-disable-next-line react/jsx-key
               <button
                 className="btn btn-success gy-2"
                 onClick={() => {
@@ -72,6 +81,7 @@ const LeaveRequest = () => {
               >
                 Accept
               </button>,
+              // eslint-disable-next-line react/jsx-key
               <button
                 className="btn btn-danger"
                 onClick={() => {
@@ -86,15 +96,25 @@ const LeaveRequest = () => {
               className="p px-2"
               title={
                 <div>
-                  <b>{leave.employee_name}</b>
+                  <b className=" capitalize text-xl font-semibold">
+                    {leave.employee_name}
+                  </b>
                 </div>
               }
               description={
                 // `Reason: ${leave.reason}, Strat Date: ${leave.start_date}, End Date: ${leave.end_date}`
                 <div>
-                  <p>Reason: {leave.reason}</p>
-                  <p>
-                    Date: {leave.start_date} to {leave.end_date}
+                  <p className=" text-base font-semibold">
+                    Reason :{" "}
+                    {
+                      <div className=" text-base font-medium inline capitalize">
+                        {leave.reason}
+                      </div>
+                    }
+                  </p>
+                  <p className="text-sm font-normal">
+                    Date: {formatDate(leave.start_date)} to{" "}
+                    {formatDate(leave.end_date)}
                   </p>
                 </div>
               }
