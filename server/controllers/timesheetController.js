@@ -44,6 +44,20 @@ const getAll = async(req,res)=>{
     }
 }
 
+const getByEmail = async(req,res)=>{
+    const filter = {employee_email :req.params.email};
+    console.log(filter)
+    const result = await Timesheet.find(filter);
+    // console.log(result)
+    try {
+        // Find all leave requests with the matching email
+        // const leaveRequests = await leaveRequest.find({ email: filter });
+        return res.status(200).send({success:true,data:result});
+      } catch (error) {
+        res.status(500).json({ message: 'Error fetching Time Sheets' });
+      }
+}
+
 const deleteTimesheet = async(req,res)=>{
     const filter = {_id :req.params.id};
     const result=await Timesheet.deleteOne(filter);
@@ -79,4 +93,4 @@ const updateTimesheet = async(req,res)=>{
     }
 }
 
-module.exports={saveTimeSheet,getOneTimesheet,getAll,deleteTimesheet,updateTimesheet}
+module.exports={saveTimeSheet,getOneTimesheet,getAll,getByEmail,deleteTimesheet,updateTimesheet}
