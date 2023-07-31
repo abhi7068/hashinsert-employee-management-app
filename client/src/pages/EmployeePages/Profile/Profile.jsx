@@ -8,7 +8,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-// import {bg_1} from '../../../assets'
+
 
 
 const Profile = () => {
@@ -58,8 +58,8 @@ const Profile = () => {
           });
     }
     return (
-        <div style={{marginLeft: '10%' }}>
-            <Card sx={{ maxWidth: '100%' ,background: 'radial-gradient(circle, #ff1493, #ff69b4)'}}>
+        <div style={{marginLeft: '30%'}}>
+            <Card sx={{ maxWidth: 500 }}>
             <CardContent>
                 <Typography variant='h3'  gutterBottom> WELCOME <b>{userData.employee_name}</b></Typography>
                 {/* <Typography variant="body1"> */}

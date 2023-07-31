@@ -36,7 +36,7 @@ const EmpleaveRequests = () => {
     }, []);
 
     return (
-        <div>
+        <div >
 
             {!showForm && <div className='header'>
                 <h1>Leave Requests</h1>
