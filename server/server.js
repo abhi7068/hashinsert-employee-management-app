@@ -29,6 +29,9 @@ app.use("/leaverequest/", leaveRequestRoute);
 const timesheetRoute = require("./routes/timesheetRoute");
 app.use("/timesheet/", timesheetRoute);
 
+const teamRoutes = require("./routes/teamRoutes");
+app.use("/team/", teamRoutes);
+
 app.get("/", (req, res) => {
   return res.json("hi there");
 });
