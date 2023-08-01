@@ -26,6 +26,7 @@ const API_URL = "https://server-sx5c.onrender.com";
 const getAllTimesheets = async () => {
   try {
     const data = await axios.get(`${API_URL}/timesheet/getAll`);
+    console.log(data.data);
     return data.data; // Assuming the timesheet data is returned as an array
   } catch (error) {
     console.log(error);
@@ -146,8 +147,9 @@ const TimeSheetDetailPage = ({ status }) => {
   const { data, isLoading, error } = useQuery("timesheets", getAllTimesheets);
   const queryClient = useQueryClient();
   const mainData =
-    data?.Timesheet.filter((item) => item.email === auth.currentUser.email) ||
-    [];
+    data?.Timesheet.filter(
+      (item) => item.employee_email === auth.currentUser.email
+    ) || [];
   const filteredData = mainData.filter((item) => item.status === status);
 
   const [openStates, setOpenStates] = useState({}); // Use useState to store open states for each timesheet
@@ -237,7 +239,7 @@ const TimeSheetDetailPage = ({ status }) => {
 
             <div className="flex justify-between mb-4 truncate">
               <h1 className="text-clip overflow-hidden line-clamp-1  text-xl font-semibold capitalize">
-                {timesheet?.name}
+                {timesheet?.employee_name}
               </h1>
 
               <p
@@ -257,7 +259,7 @@ const TimeSheetDetailPage = ({ status }) => {
                 <div className="flex justify-center items-center">
                   <EmailIcon className="mr-2" />
                   <p className="text-sm font-semibold text-ellipsis line-clamp-1">
-                    {timesheet.email}
+                    {timesheet.employee_email}
                   </p>
                 </div>
               </Tooltip>

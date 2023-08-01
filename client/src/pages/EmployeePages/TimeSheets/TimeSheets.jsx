@@ -31,25 +31,42 @@ const Schema = yup.object().shape({
 const API_URL = "https://server-sx5c.onrender.com";
 const sendTimeSheet = async (data) => {
   try {
-    data.date = data.date.toISOString().slice(0, 10); // Convert date to ISO format
+    // Extract year, month, and day components from the provided date string
+    const dateObj = new Date(data.date);
+    const year = dateObj.getFullYear();
+    let month = dateObj.getMonth() + 1; // Months are 0-indexed, so adding 1 to get the correct month
+    let day = dateObj.getDate();
+
+    // Convert month and day to two-digit format if they are single digits
+    if (month < 10) {
+      month = `0${month}`;
+    }
+    if (day < 10) {
+      day = `0${day}`;
+    }
+
+    // Construct the date in "yyyy-mm-dd" format
+    data.date = `${year}-${month}-${day}`;
     data.duration = data.duration.toString() + "hrs"; // Convert duration to string
+    console.log(data);
     const response = await axios.post(`${API_URL}/timesheet/save`, {
       project_name: data.project_name,
       activity: data.activity,
       date: data.date,
       duration: data.duration,
       status: "pending",
-      email: auth.currentUser.email,
-      name: auth.currentUser.displayName,
+      employee_email: auth.currentUser.email,
+      employee_name: auth.currentUser.displayName,
     });
     if (response.data.success) {
       message.success(`Your Timesheet is Submitted successfully`);
+      console.log(response.data);
       return response.data;
     } else {
       message.error(`Oops! Something went wrong`);
     }
   } catch (error) {
-    console.log(error);
+    console.log(`Error: ${error}`);
     throw new Error("Failed to submit timesheet");
   }
 };
