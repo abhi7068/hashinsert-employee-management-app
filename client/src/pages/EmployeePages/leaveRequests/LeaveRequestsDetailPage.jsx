@@ -50,6 +50,8 @@ function LeaveRequestsDetailPage() {
     getAllLeaveRequests
   );
 
+  console.log("data", data);
+
   if (isLoading) {
     return <Loader isLoading={isLoading} />;
   }
@@ -59,11 +61,12 @@ function LeaveRequestsDetailPage() {
   }
 
   const pendingData = data.filter((item) => item.status === "pending");
-  const approvedData = data.filter((item) => item.status === "approved");
+  const approvedData = data.filter((item) => item.status === "accepted");
   const rejectedData = data.filter((item) => item.status === "rejected");
 
   console.log(pendingData);
-  console.log(approvedData);
+  console.log("approvedData", approvedData);
+  // console.log(approvedData);
   console.log(rejectedData);
 
   const columns = [
