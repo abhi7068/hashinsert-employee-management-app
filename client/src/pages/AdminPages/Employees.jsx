@@ -60,11 +60,13 @@ const Employees = () => {
     setEditFormVisible(true);
   };
 
-  const handleNewTeamButton = () => {
+  const handleNewTeamButton = (values) => {
+    setSelectedRow({ ...values });
     setNewTeamModalVisible(!newTeamModalVisible);
   };
 
-  const handleTeam = () => {
+  const handleTeamModal = (user) => {
+    setSelectedRow({ ...user });
     setTeamModalVisible(!teamModalVisible);
   };
 
@@ -216,7 +218,7 @@ const Employees = () => {
           }}
         />
         {/* add a dialog box here with email field and add and cancel buttons  */}
-        <Tooltip title="Add to a Team">
+        <Tooltip title="Create Team">
           <button
             className="bg-primary-button font-medium px-4 py-2 rounded-full text-lg text-text-color inline-block text-white "
             onClick={handleNewTeamButton}
@@ -247,7 +249,7 @@ const Employees = () => {
                 <Tooltip title="Add to a Team">
                   <UsergroupAddOutlined
                     className="button"
-                    onClick={() => handleTeam()}
+                    onClick={() => handleTeamModal(user)}
                   />
                 </Tooltip>,
                 // eslint-disable-next-line react/jsx-key
@@ -276,7 +278,11 @@ const Employees = () => {
                     <b>{user.employee_name}</b>
                   </p>
                 }
-                description={`Employee ID: ${user.employee_id}, Email: ${user.email}, Hire Date: ${user.hire_date}`}
+                description={`Employee ID: ${user.employee_id}, Email: ${
+                  user.email
+                }, Hire Date: ${user.hire_date}, Teams: ${
+                  user.teams ? user.teams : ""
+                }`}
               />
             </List.Item>
           )}
@@ -290,7 +296,13 @@ const Employees = () => {
         initialValues={selectedRow}
         onFinish={handleFinish}
       />
-      <Teams visible={teamModalVisible} handleTeam={handleTeam}></Teams>
+      <Teams
+        id={selectedRow?._id}
+        visible={teamModalVisible}
+        handleTeamModal={handleTeamModal}
+        employeeList={users}
+        // teamList={teamList}
+      ></Teams>
       <NewTeam
         visible={newTeamModalVisible}
         handleNewTeamButton={handleNewTeamButton}
