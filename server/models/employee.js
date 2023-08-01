@@ -40,6 +40,9 @@ const employeeSchema = new mongoose.Schema(
     imageURL: {
       type: String,
     },
+    teams: {
+      type: [],
+    },
   },
   { timeStamps: true }
 );
