@@ -9,7 +9,9 @@ export const Teams = ({ visible, handleTeamModal, id }) => {
 
   const getAllTeams = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/team/getAll/`);
+      const response = await axios.get(
+        `https://server-sx5c.onrender.com/team/getAll/`
+      );
       if (response.data.success) {
         var teamNames = response.data.teams.map((team) => team.teamName);
         setTeams(teamNames);
@@ -22,7 +24,7 @@ export const Teams = ({ visible, handleTeamModal, id }) => {
   const handleAddToTeam = async (teamName, id) => {
     try {
       const response = await axios.put(
-        `http://localhost:4000/team/updateTeam/`,
+        `https://server-sx5c.onrender.com/team/updateTeam/`,
         {
           teamName,
           id,
