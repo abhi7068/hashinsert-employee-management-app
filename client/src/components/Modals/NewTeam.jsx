@@ -26,7 +26,7 @@ const NewTeam = ({ visible, handleNewTeamButton, values }) => {
     try {
       if (teamName !== "") {
         const response = await axios.post(
-          "http://localhost:4000/team/createTeam",
+          "https://server-sx5c.onrender.com/team/createTeam",
           {
             teamName: teamName,
             members: members.map((mem) => mem._id),
