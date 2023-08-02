@@ -1,10 +1,12 @@
 import { Input, Card, Modal, Tooltip, Form, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { RerenderContext } from "../../context/ReRender";
 const NewTeam = ({ visible, handleNewTeamButton, values }) => {
   const [members, setMembers] = useState([]);
   const [teamName, setTeamName] = useState("");
+  const { updateRender } = useContext(RerenderContext);
 
   const addMember = (member) => {
     const newMember = members.some((m) => m._id === member._id);
@@ -14,12 +16,17 @@ const NewTeam = ({ visible, handleNewTeamButton, values }) => {
   };
 
   const handleCancel = () => {
+    form.resetFields();
+    setMembers([]);
     handleNewTeamButton();
   };
 
-  const handleOk = () => {
-    handleAddEmployee();
+  const handleOk = async () => {
+    await handleAddEmployee();
+    form.resetFields();
+    setMembers([]);
     handleNewTeamButton();
+    updateRender();
   };
 
   const handleAddEmployee = async () => {
