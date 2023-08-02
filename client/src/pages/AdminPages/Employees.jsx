@@ -45,7 +45,7 @@ const Employees = () => {
   const [newTeamModalVisible, setNewTeamModalVisible] = useState(false);
   // const [deleteModal, setDeleteModal] = useState(false);
   const { render, updateRender } = useContext(RerenderContext);
-  const API_URL = "http://localhost:4000";
+  const API_URL = "https://server-sx5c.onrender.com";
 
   const handleClose = () => {
     setOpen(false);
