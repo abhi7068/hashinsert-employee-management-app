@@ -114,7 +114,6 @@ const Employees = () => {
           user.employee_id.toString().includes(searchQuery)
       );
       setUsers(filteredUsers);
-      console.log(filteredUsers);
       setIsLoading(false);
     } catch (error) {
       console.log("error in getting all employees", error);
@@ -145,7 +144,6 @@ const Employees = () => {
   };
 
   const deleteEmployee = async (user) => {
-    console.log(user);
     try {
       setIsLoading(true);
       // First, delete the user from your own backend (assuming it's served by your server)

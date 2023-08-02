@@ -62,7 +62,7 @@ export default function FormDialog({ open, handleClose }) {
 
         if (querySnapshot.empty) {
           await addDoc(usersCollection, {
-            employee_id: values.employeeId,
+            // employee_id: values.employeeId,
             employee_name: values.employeeName,
             phone_number: values.phone,
             email: values.email,
@@ -74,7 +74,7 @@ export default function FormDialog({ open, handleClose }) {
 
           // Send a request to the server with all form data
           const formData = {
-            employee_id: values.employeeId,
+            // employee_id: values.employeeId,
             employee_name: values.employeeName,
             phone_number: values.phone,
             email: values.email,
