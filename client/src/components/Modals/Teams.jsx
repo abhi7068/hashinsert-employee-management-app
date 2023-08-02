@@ -49,22 +49,24 @@ export const Teams = ({ visible, handleTeamModal, id }) => {
 
   useEffect(() => {
     getAllTeams();
-  }, []);
+  }, [updateRender]);
 
   return (
-    <Modal
-      title="Add to a Team"
-      open={visible}
-      onCancel={handleTeamModalCancel}
-      footer={[]}
-    >
-      <div className="flex flex-wrap gap-2">
-        {teams.map((team, index) => (
-          <Button key={index} onClick={() => handleAddToTeam(team, id)}>
-            {team}
-          </Button>
-        ))}
-      </div>
-    </Modal>
+    <>
+      <Modal
+        title="Add to a Team"
+        open={visible}
+        onCancel={handleTeamModalCancel}
+        footer={[]}
+      >
+        <div className="flex flex-wrap gap-2">
+          {teams.map((team, index) => (
+            <Button key={index} onClick={() => handleAddToTeam(team, id)}>
+              {team}
+            </Button>
+          ))}
+        </div>
+      </Modal>
+    </>
   );
 };

@@ -44,7 +44,7 @@ const Employees = () => {
   const [teamModalVisible, setTeamModalVisible] = useState(false);
   const [newTeamModalVisible, setNewTeamModalVisible] = useState(false);
   // const [deleteModal, setDeleteModal] = useState(false);
-  const { render } = useContext(RerenderContext);
+  const { render, updateRender } = useContext(RerenderContext);
   const API_URL = "https://server-sx5c.onrender.com";
 
   const handleClose = () => {
@@ -186,6 +186,7 @@ const Employees = () => {
 
   useEffect(() => {
     getAllEmployees();
+    // updateRender();
   }, [render, searchQuery]);
 
   return (
