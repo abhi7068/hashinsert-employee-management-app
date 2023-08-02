@@ -133,6 +133,7 @@ const Employees = () => {
         message.success(
           `${response.data.data.employee_name}'s data is Updated successfully`
         );
+        getAllEmployees(); // Refresh the user list after successfully updating
       } else {
         message.error(`Oops! Something went wrong.`);
       }
@@ -144,6 +145,7 @@ const Employees = () => {
   };
 
   const deleteEmployee = async (user) => {
+    console.log(user);
     try {
       setIsLoading(true);
       // First, delete the user from your own backend (assuming it's served by your server)
@@ -158,7 +160,6 @@ const Employees = () => {
         const querySnapshot = await getDocs(
           query(collectionRef, where("email", "==", user.email))
         );
-
         if (!querySnapshot.empty) {
           querySnapshot.forEach((doc) => {
             deleteDoc(doc.ref);
@@ -167,7 +168,6 @@ const Employees = () => {
         } else {
           message.error(response.data.msg);
         }
-
         getAllEmployees(); // Refresh the user list after successful deletion
       } else {
         message.error(response.data.msg);
