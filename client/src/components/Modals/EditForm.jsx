@@ -13,12 +13,13 @@ export const EditForm = ({ visible, onCancel, initialValues, onFinish }) => {
     form
       .validateFields()
       .then((values) => {
+        console.log(values);
         onFinish({
           ...initialValues,
-          employee_id: values.employee_id,
           employee_name: values.employee_name,
-          email: values.email,
-          hire_date: values.hire_date,
+          phone_number: values.phone_number,
+          role: values.role,
+          salary: values.salary,
         });
       })
       .catch((error) => {
@@ -65,12 +66,8 @@ export const EditForm = ({ visible, onCancel, initialValues, onFinish }) => {
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          name="salary"
-          label="Salary"
-          rules={[{ required: true, message: "Please enter Department ID" }]}
-        >
-          <Input disabled />
+        <Form.Item name="salary" label="Salary">
+          <Input readOnly />
         </Form.Item>
       </Form>
     </Modal>
