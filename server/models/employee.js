@@ -3,7 +3,8 @@ const employeeSchema = new mongoose.Schema(
   {
     employee_id: {
       type: Number,
-      required: true,
+      // required: true,
+      unique: true,
     },
     employee_name: {
       type: String,

@@ -1,8 +1,10 @@
 const Employee = require("../models/employee");
 
 const saveEmployee = async (req, res) => {
+  const employeesCount = await Employee.countDocuments();
+  console.log(employeesCount + 1);
   const newEmployee = Employee({
-    employee_id: req.body.employee_id,
+    employee_id: employeesCount + 1,
     employee_name: req.body.employee_name,
     // last_name: req.body.last_name,
     email: req.body.email,
@@ -13,6 +15,7 @@ const saveEmployee = async (req, res) => {
     salary: req.body.salary,
     role: req.body.role,
   });
+  console.log(newEmployee);
   try {
     const savedEmployee = await newEmployee.save();
     return res.status(200).send({ success: true, Employee: savedEmployee });
