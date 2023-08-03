@@ -44,7 +44,7 @@ const Employees = () => {
   const [teamModalVisible, setTeamModalVisible] = useState(false);
   const [newTeamModalVisible, setNewTeamModalVisible] = useState(false);
   // const [deleteModal, setDeleteModal] = useState(false);
-  const { render, updateRender } = useContext(RerenderContext);
+  const { render } = useContext(RerenderContext);
   const API_URL = "https://server-sx5c.onrender.com";
 
   const handleClose = () => {
@@ -129,7 +129,7 @@ const Employees = () => {
         user
       );
       if (response.data.success) {
-        message.success(
+        message.error(
           `${response.data.data.employee_name}'s data is Updated successfully`
         );
         getAllEmployees(); // Refresh the user list after successfully updating
@@ -162,7 +162,7 @@ const Employees = () => {
           querySnapshot.forEach((doc) => {
             deleteDoc(doc.ref);
           });
-          message.success(`${user.employee_name} is Deleted successfully`);
+          message.error(`${user.employee_name} is Deleted successfully`);
         } else {
           message.error(response.data.msg);
         }
