@@ -18,10 +18,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useContext } from "react";
 import { RerenderContext } from "../../context/ReRender";
+import { message } from "antd";
 
 // Define the Yup validation schema
 const validationSchema = Yup.object().shape({
-  employeeId: Yup.number().required("Employee ID is required"),
+  // employeeId: Yup.number().required("Employee ID is required"),
   employeeName: Yup.string().required("Employee name is required"),
   phone: Yup.string()
     .required("Phone number is required")
@@ -101,19 +102,18 @@ export default function FormDialog({ open, handleClose }) {
 
           resetForm();
           handleClose();
-          handleSnackbarOpen("Employee added successfully", "success");
           updateRender();
+          message.success("Employee added successfully");
         } else {
           resetForm();
           handleClose();
-          handleSnackbarOpen("Employee already exists", "error");
+          message.error("Employee already exists");
         }
       } catch (error) {
         console.log(error);
         resetForm();
         handleClose();
-
-        handleSnackbarOpen("Failed to add employee", "error");
+        message.error("Failed to add employee");
       }
     },
   });
@@ -126,7 +126,7 @@ export default function FormDialog({ open, handleClose }) {
           <DialogContentText>
             To subscribe to this website, please enter employee details here.
           </DialogContentText>
-          <TextField
+          {/* <TextField
             autoFocus
             margin="dense"
             id="employeeId"
@@ -139,7 +139,7 @@ export default function FormDialog({ open, handleClose }) {
             onBlur={formik.handleBlur}
             error={formik.touched.employeeId && !!formik.errors.employeeId}
             helperText={formik.touched.employeeId && formik.errors.employeeId}
-          />
+          /> */}
           <TextField
             margin="dense"
             id="employeeName"
