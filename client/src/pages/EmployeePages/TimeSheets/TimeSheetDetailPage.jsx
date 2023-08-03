@@ -41,7 +41,9 @@ const DeleteTimeSheet = async ({ timesheet, status }) => {
       `${API_URL}/timesheet/delete/${timesheet._id}`
     );
     if (data.data.success) {
-      message.success(`${timesheet.name}'s TimeSheet is Deleted successfully`);
+      message.error(
+        `${timesheet.employee_name}'s TimeSheet is Deleted successfully`
+      );
     } else {
       message.error("Oops!, something went wrong.");
     }

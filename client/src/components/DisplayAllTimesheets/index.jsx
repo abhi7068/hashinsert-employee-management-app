@@ -34,9 +34,15 @@ const updateTimesheet = async ({ timesheet, status }) => {
       }
     );
     if (data.data.success) {
-      message.success(
-        `${timesheet?.employee_name}'s TimeSheet is ${status} succesfully`
-      );
+      if (status === "approved") {
+        message.success(
+          `${timesheet?.employee_name}'s TimeSheet is ${status} succesfully`
+        );
+      } else {
+        message.error(
+          `${timesheet?.employee_name}'s TimeSheet is ${status} succesfully`
+        );
+      }
     } else {
       message.error(`Oops!, something went wrong.`);
     }
@@ -72,24 +78,6 @@ const Index = () => {
     (timesheet) => timesheet.status === "pending"
   );
 
-  if (isLoading) {
-    return (
-      <>
-        {/* <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={isLoading}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop> */}
-        <Loader isLoading={isLoading} />
-      </>
-    );
-  }
-
-  if (error) {
-    return <h1>Error: {error.message}</h1>;
-  }
-
   const handleSubmit = async (timesheet, status) => {
     console.log("submit function called");
     try {
@@ -99,6 +87,26 @@ const Index = () => {
       console.log(error);
     }
   };
+
+  if (isLoading) {
+    return (
+      <>
+        <Loader isLoading={isLoading} />
+      </>
+    );
+  }
+
+  if (error) {
+    return <h1>Error: {error.message}</h1>;
+  }
+
+  if (!filterData?.length) {
+    return (
+      <h1 className="text-xl font-bold text-primary-button mb-6">
+        No Pending Timesheets
+      </h1>
+    );
+  }
 
   return (
     <div className="p-4">

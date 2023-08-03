@@ -38,6 +38,7 @@ const getAllTimesheets = async () => {
 };
 
 const updateTimesheet = async ({ timesheet, status }) => {
+  console.log(`update calender view timesheet ${status}`);
   try {
     const data = await axios.put(
       `${API_URL}/timesheet/update/${timesheet._id}`,
@@ -50,9 +51,15 @@ const updateTimesheet = async ({ timesheet, status }) => {
       }
     );
     if (data.data.success) {
-      message.success(
-        `${timesheet?.employee_name}'s TimeSheet is ${status} succesfully`
-      );
+      if (status === "approved") {
+        message.success(
+          `${timesheet?.employee_name}'s TimeSheet is ${status} succesfully`
+        );
+      } else {
+        message.error(
+          `${timesheet?.employee_name}'s TimeSheet is ${status} succesfully`
+        );
+      }
     } else {
       message.error(`Oops!, something went wrong.`);
     }
@@ -214,12 +221,6 @@ const TimeSheetDetailPage = ({ status }) => {
     return (
       <>
         <Loader isLoading={isLoading} />
-        {/* <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={isLoading}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop> */}
       </>
     );
   }
@@ -228,22 +229,18 @@ const TimeSheetDetailPage = ({ status }) => {
     return <h1>Error: {error.message}</h1>;
   }
 
-  // const handleSubmit = async (timesheet, status) => {
-  //   console.log("submit function called");
-  //   try {
-  //     mutation.mutate({ timesheet, status });
-  //     handleClose(timesheet._id); // Close the dialog after the mutation is successful
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  if (!filteredData?.length) {
+    return (
+      <div className="p-4">
+        <h1 className="text-xl font-bold text-primary-button mb-6">
+          No {status} Timesheets
+        </h1>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4">
-      {/* <button className=" ">
-        Back
-      </button> */}
-
       <h1 className="text-xl font-bold text-primary-button mb-6">
         Time Sheets
       </h1>
@@ -263,7 +260,7 @@ const TimeSheetDetailPage = ({ status }) => {
                 <>
                   <button
                     key="approve"
-                    onClick={() => handleClose(timesheet._id)}
+                    onClick={() => handleSubmit(timesheet, "approved")}
                     className="bg-green-400 px-4 py-2 rounded-md text-white font-semibold"
                   >
                     Approve
