@@ -1,10 +1,16 @@
 const Employee = require("../models/employee");
 
 const saveEmployee = async (req, res) => {
-  const employeesCount = await Employee.countDocuments();
-  console.log(employeesCount + 1);
+  const lastEmployee = await Employee.findOne({}, { employee_id: 1 })
+    .sort({ employee_id: -1 })
+    .limit(1);
+  console.log(lastEmployee);
+  let nextEmployeeId = 1;
+  if (lastEmployee) {
+    nextEmployeeId = lastEmployee.employee_id + 1;
+  }
   const newEmployee = Employee({
-    employee_id: employeesCount + 1,
+    employee_id: nextEmployeeId,
     employee_name: req.body.employee_name,
     // last_name: req.body.last_name,
     email: req.body.email,
