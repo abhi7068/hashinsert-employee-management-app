@@ -70,6 +70,7 @@ const LeaveRequest = () => {
 
   return (
     <>
+    <div className="container">
       <h2 className=" text-xl font-semibold mb-4 text-primary-button">
         Leave Requests
       </h2>
@@ -131,6 +132,7 @@ const LeaveRequest = () => {
           </List.Item>
         )}
       />
+      </div>
     </>
   );
 };

@@ -1,3 +1,16 @@
 .button {
   cursor: pointer;
 }
+
+.container::before {
+  content: '';
+  background: url('https://wallpapercave.com/wp/wp3744429.jpg') 
+      no-repeat center center/cover;
+  position: absolute;
+  opacity: 0.1;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}

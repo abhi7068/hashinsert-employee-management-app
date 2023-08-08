@@ -111,6 +111,7 @@ const TimeSheets = () => {
 
   return (
     <>
+    <div className="container">
       <div className=" flex justify-between items-center flex-wrap mb-6 text-xl text-primary-button font-bold">
         <h1>Submit TimeSheets</h1>
 
@@ -174,6 +175,7 @@ const TimeSheets = () => {
             {/* ... rest of the form content */}
           </form>
         </div>
+      </div>
       </div>
     </>
   );

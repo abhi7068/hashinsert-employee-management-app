@@ -21,6 +21,7 @@ const CalenderView = () => {
   }, [finalUser?.user?.email]);
   return (
     <>
+    <div className="container">
       <div className=" text-xl font-bold text-primary-button mb-6 flex flex-wrap justify-between items-center">
         <div>CalenderView</div>
         <div>
@@ -28,6 +29,7 @@ const CalenderView = () => {
         </div>
       </div>
       <CalenderPage value={value} setValue={setValue} />
+      </div>
     </>
   );
 };

@@ -95,6 +95,7 @@ export default function ViewAllTimeSheetsEmployee() {
   };
 
   return (
+    <div className="container">
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
@@ -117,6 +118,7 @@ export default function ViewAllTimeSheetsEmployee() {
         <TimeSheetDetailPage status="rejected" />
       </TabPanel>
     </Box>
+    </div>
   );
 }
 

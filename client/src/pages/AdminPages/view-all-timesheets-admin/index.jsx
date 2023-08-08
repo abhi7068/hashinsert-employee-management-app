@@ -92,6 +92,7 @@ function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
+    
     <div
       role="tabpanel"
       hidden={value !== index}
@@ -128,6 +129,7 @@ export default function ViewAllTimesheetsAdmin() {
   };
 
   return (
+    <div className="container">
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
@@ -150,6 +152,7 @@ export default function ViewAllTimesheetsAdmin() {
         <TimeSheetDetailPage status="rejected" />
       </TabPanel>
     </Box>
+    </div>
   );
 }
 

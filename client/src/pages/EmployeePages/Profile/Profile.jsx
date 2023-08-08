@@ -30,7 +30,9 @@ const Profile = () => {
   }
   return (
     <>
+    <div className="container">
       <EmployeeProfile data={data} />
+      </div>
     </>
   );
 };

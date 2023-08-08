@@ -189,6 +189,7 @@ const Employees = () => {
 
   return (
     <>
+    <div className="container">
       <MuiSnackbar
         open={snackbar.open}
         handleClose={handleSnackbarClose}
@@ -308,6 +309,7 @@ const Employees = () => {
         values={users}
       ></NewTeam>
       {/* <DeleteUser handleDelete={deleteEmployee} visible={deleteModal} /> */}
+      </div>
     </>
   );
 };

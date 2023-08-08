@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 const leaveRequests = () => {
   return (
     <>
+    <div className="container">
       <div className=" flex justify-between items-center text-xl font-bold text-primary-button mb-12 flex-wrap ">
         <div>Leave Requests</div>
         <Link to={"/employee/leaverequestsdetails"} className=" cursor-pointer">
@@ -20,6 +21,7 @@ const leaveRequests = () => {
         <div className=" w-full ">
           <LeaveRequestsFrorm className=" flex " />
         </div>
+      </div>
       </div>
     </>
   );

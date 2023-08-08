@@ -17,8 +17,10 @@ const TimeSheets = () => {
 
   return (
     <>
+    <div className="container">
       {/* <DisplayAllEmployees /> */}
       <DisplayAllTimesheets />
+      </div>
     </>
   );
 };

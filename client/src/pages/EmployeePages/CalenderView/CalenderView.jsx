@@ -20,6 +20,7 @@ const EmpCalenderView = () => {
   }, [finalUser?.user?.email]);
   return (
     <>
+    <div className="container">
       <div className=" text-2xl font-bold text-primary-button mb-6 flex justify-between items-center">
         <div>This is calender view page</div>
 
@@ -28,6 +29,7 @@ const EmpCalenderView = () => {
         </div>
       </div>
       <CalenderPage value={value} setValue={setValue} />
+      </div>
     </>
   );
 };
